@@ -1,9 +1,10 @@
 import { useState } from "react";
+import Quiz from "./components/Quiz";
 
 function App() {
   return (
     <>
-      <h1>Workout Rush</h1>
+      <Quiz />
     </>
   );
 }
