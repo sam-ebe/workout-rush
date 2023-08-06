@@ -5,6 +5,7 @@ import { styled } from "styled-components";
 function Quiz() {
   const [quiz, setQuiz] = useState(quizData);
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [quizCompleted, setQuizCompleted] = useState(false);
 
   const isFirstQuestion = currentQuestion === 0;
   const isLastQuestion = currentQuestion === quiz.length - 1;
@@ -13,6 +14,8 @@ function Quiz() {
   const handleNext = () => {
     if (!isLastQuestion) {
       setCurrentQuestion((c) => c + 1);
+    } else {
+      setQuizCompleted(true);
     }
   };
   const handlePrevious = () => {
@@ -22,25 +25,35 @@ function Quiz() {
     }
   };
 
-  const handleSkipAll = () => {};
+  const handleSkipAll = () => {
+    setQuizCompleted((c) => !c);
+    setCurrentQuestion(0);
+  };
 
-  const handleSelect = (e) => {
+  const handleSelect = (e, multipleChoice) => {
     const selectedAnswer = e.target.value;
+
     const updatedQuiz = quiz.map((item) => {
       if (quiz[currentQuestion].id === item.id) {
-        const itemIndex = item.answers.findIndex(
-          (elt) => elt === selectedAnswer,
-        );
-        // already present in the quiz array
-        if (itemIndex !== -1) {
-          // delete 1 element
-          return {
-            ...item,
-            answers: item.answers.filter((ans) => ans !== selectedAnswer),
-          };
+        // a checkbox
+        if (multipleChoice) {
+          const itemIndex = item.answers.findIndex(
+            (elt) => elt === selectedAnswer,
+          );
+          // already present in the quiz array
+          if (itemIndex !== -1) {
+            // delete 1 element
+            return {
+              ...item,
+              answers: item.answers.filter((ans) => ans !== selectedAnswer),
+            };
+          } else {
+            // not yet in the quiz array
+            return { ...item, answers: [...item.answers, selectedAnswer] };
+          }
         } else {
-          // not yet in the quiz array
-          return { ...item, answers: [...item.answers, selectedAnswer] };
+          // a radio
+          return { ...item, answers: [selectedAnswer] };
         }
       } else {
         return item;
@@ -50,35 +63,43 @@ function Quiz() {
   };
   return (
     <>
-      <StyledQuiz>
-        <ProgressBar current={currentQuestion + 1} total={quiz.length} />
-        <Button onClick={handleSkipAll}>Skip all</Button>
-        <Question>{quiz[currentQuestion].question}</Question>
-        <Options>{displayOptions(quiz, currentQuestion, handleSelect)}</Options>
+      {!quizCompleted ? (
+        <StyledQuiz>
+          <ProgressBar current={currentQuestion + 1} total={quiz.length} />
+          <Button onClick={handleSkipAll}>Skip all</Button>
+          <Question>{quiz[currentQuestion].question}</Question>
+          <Options>
+            {displayOptions(quiz, currentQuestion, handleSelect)}
+          </Options>
 
-        <div className="prevNext">
-          {!isFirstQuestion && (
-            <Button onClick={handlePrevious}>Previous</Button>
-          )}
-          <Button onClick={handleNext}>
-            {!isLastQuestion ? "Next" : "Finish"}
-          </Button>
-        </div>
-      </StyledQuiz>
-      <RecapQuiz></RecapQuiz>
+          <div className="prevNext">
+            {!isFirstQuestion && (
+              <Button onClick={handlePrevious}>Previous</Button>
+            )}
+            <Button onClick={handleNext}>
+              {!isLastQuestion ? "Next" : "Finish"}
+            </Button>
+          </div>
+        </StyledQuiz>
+      ) : (
+        <RecapQuiz>
+          <Button onClick={handleSkipAll}>Edit My Answers</Button>
+        </RecapQuiz>
+      )}
     </>
   );
 }
 
 function displayOptions(quiz, currentQuestion, handleSelect) {
+  const multipleChoice = quiz[currentQuestion].isMultipleChoice;
   return quiz[currentQuestion].options.map((answer, index) => {
     return (
       <li key={index}>
         <input
-          type="checkbox"
+          type={multipleChoice ? "checkbox" : "radio"}
           name={`${quiz[currentQuestion].id}`}
           value={answer.label}
-          onChange={handleSelect}
+          onChange={(e) => handleSelect(e, multipleChoice)}
           checked={quiz[currentQuestion].answers.includes(answer.label)}
         />
         <label htmlFor={answer.label}>{answer.label}</label>
@@ -125,6 +146,9 @@ const Options = styled.ul`
   padding: 0 0 20px 0;
   display: flex;
   flex-direction: column;
+  & li {
+    list-style-type: none;
+  }
 `;
 
 const Button = styled.button`
@@ -138,4 +162,5 @@ const StyledProgressBar = styled.div`
 
 const RecapQuiz = styled.div`
   background: salmon;
+  height: 100vh;
 `;
