@@ -2,31 +2,28 @@ import React, { useState } from "react";
 import { quizData } from "../data/data";
 import { styled } from "styled-components";
 
-function Quiz() {
+function Quiz({ quizCompleted, handleQuizComplete }) {
   const [quiz, setQuiz] = useState(quizData);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [quizCompleted, setQuizCompleted] = useState(false);
 
   const isFirstQuestion = currentQuestion === 0;
   const isLastQuestion = currentQuestion === quiz.length - 1;
-  const isFinished = quiz[quiz.length - 1].answers.length !== 0;
 
   const handleNext = () => {
     if (!isLastQuestion) {
       setCurrentQuestion((c) => c + 1);
     } else {
-      setQuizCompleted(true);
+      handleQuizComplete(!quizCompleted);
     }
   };
   const handlePrevious = () => {
     if (!isFirstQuestion) {
       setCurrentQuestion((c) => c - 1);
-      console.log(currentQuestion);
     }
   };
 
   const handleSkipAll = () => {
-    setQuizCompleted((c) => !c);
+    handleQuizComplete(!quizCompleted);
     setCurrentQuestion(0);
   };
 
@@ -63,29 +60,23 @@ function Quiz() {
   };
   return (
     <>
-      {!quizCompleted ? (
-        <StyledQuiz>
-          <ProgressBar current={currentQuestion + 1} total={quiz.length} />
-          <Button onClick={handleSkipAll}>Skip all</Button>
-          <Question>{quiz[currentQuestion].question}</Question>
-          <Options>
-            {displayOptions(quiz, currentQuestion, handleSelect)}
-          </Options>
+      <StyledQuiz>
+        <ProgressBar current={currentQuestion + 1} total={quiz.length} />
+        <Button onClick={handleSkipAll}>Skip all</Button>
+        <Question>{`${currentQuestion + 1}. ${
+          quiz[currentQuestion].question
+        }`}</Question>
+        <Options>{displayOptions(quiz, currentQuestion, handleSelect)}</Options>
 
-          <div className="prevNext">
-            {!isFirstQuestion && (
-              <Button onClick={handlePrevious}>Previous</Button>
-            )}
-            <Button onClick={handleNext}>
-              {!isLastQuestion ? "Next" : "Finish"}
-            </Button>
-          </div>
-        </StyledQuiz>
-      ) : (
-        <RecapQuiz>
-          <Button onClick={handleSkipAll}>Edit My Answers</Button>
-        </RecapQuiz>
-      )}
+        <div className="prevNext">
+          {!isFirstQuestion && (
+            <Button onClick={handlePrevious}>Previous</Button>
+          )}
+          <Button onClick={handleNext}>
+            {!isLastQuestion ? "Next" : "Finish"}
+          </Button>
+        </div>
+      </StyledQuiz>
     </>
   );
 }
@@ -110,8 +101,9 @@ function displayOptions(quiz, currentQuestion, handleSelect) {
 }
 
 function ProgressBar({ current, total }) {
+  const currentBar = current / total;
   return (
-    <StyledProgressBar>
+    <StyledProgressBar $currentBar={currentBar}>
       <p className="pb-value">{`${current} of ${total}`}</p>
       <div className="pb-track">
         <div className="pb-bar"></div>
@@ -154,13 +146,27 @@ const Options = styled.ul`
 const Button = styled.button`
   padding: 12px;
   min-width: 100px;
+  border-radius: 8px;
+  border: none;
 `;
 
 const StyledProgressBar = styled.div`
-  & .p
-`;
-
-const RecapQuiz = styled.div`
-  background: salmon;
-  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+  align-items: center;
+  & .pb-track {
+    width: 80%;
+    height: 24px;
+    background: rgb(228, 228, 228);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  & .pb-bar {
+    width: ${(props) => props.$currentBar * 100}%;
+    height: 98%;
+    background: green;
+    transition: all 0.3s ease;
+  }
 `;
