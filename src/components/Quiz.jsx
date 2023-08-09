@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { quizData } from "../data/data";
 import { styled } from "styled-components";
+import { Button } from "./Button";
 
 function Quiz({ quizCompleted, handleQuizComplete }) {
   const [quiz, setQuiz] = useState(quizData);
@@ -141,13 +142,6 @@ const Options = styled.ul`
   & li {
     list-style-type: none;
   }
-`;
-
-const Button = styled.button`
-  padding: 12px;
-  min-width: 100px;
-  border-radius: 8px;
-  border: none;
 `;
 
 const StyledProgressBar = styled.div`

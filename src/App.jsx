@@ -1,9 +1,10 @@
 import { useState } from "react";
 import Quiz from "./components/Quiz";
 import "./index.css";
+import SessionSelect from "./components/SessionSelect";
 
 function App() {
-  const [quizCompleted, setQuizCompleted] = useState(false);
+  const [quizCompleted, setQuizCompleted] = useState(true);
 
   const handleQuizComplete = (c) => {
     setQuizCompleted(c);
@@ -16,9 +17,10 @@ function App() {
           handleQuizComplete={handleQuizComplete}
         />
       ) : (
-        <button onClick={() => handleQuizComplete(!quizCompleted)}>
+        /*<button onClick={() => handleQuizComplete(!quizCompleted)}>
           Back to the Quiz
-        </button>
+        </button>*/
+        <SessionSelect />
       )}
     </>
   );
