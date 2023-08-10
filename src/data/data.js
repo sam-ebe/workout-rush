@@ -137,6 +137,7 @@ export const exercicesData = [
     main_muscle_group: ["biceps"],
     lesser_muscle_group: ["forearms"],
     necessary_equipment: ["dumbbell"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -146,6 +147,7 @@ export const exercicesData = [
     main_muscle_group: ["triceps"],
     lesser_muscle_group: ["forearms"],
     necessary_equipment: ["dumbbell"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -155,6 +157,7 @@ export const exercicesData = [
     main_muscle_group: ["upper back/neck"],
     lesser_muscle_group: ["biceps"],
     necessary_equipment: ["pull-up bar"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -164,6 +167,7 @@ export const exercicesData = [
     main_muscle_group: ["shoulders"],
     lesser_muscle_group: ["triceps"],
     necessary_equipment: ["dumbbell"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -173,6 +177,7 @@ export const exercicesData = [
     main_muscle_group: ["chest"],
     lesser_muscle_group: ["shoulders"],
     necessary_equipment: ["none"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -182,6 +187,7 @@ export const exercicesData = [
     main_muscle_group: ["shoulders"],
     lesser_muscle_group: ["forearms"],
     necessary_equipment: ["dumbbell"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -191,6 +197,7 @@ export const exercicesData = [
     main_muscle_group: ["upper back/neck"],
     lesser_muscle_group: ["biceps"],
     necessary_equipment: ["dumbbell"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -200,6 +207,7 @@ export const exercicesData = [
     main_muscle_group: ["biceps"],
     lesser_muscle_group: ["forearms"],
     necessary_equipment: ["dumbbell"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -209,6 +217,7 @@ export const exercicesData = [
     main_muscle_group: ["upper back/neck"],
     lesser_muscle_group: ["shoulders"],
     necessary_equipment: ["dumbbell"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -218,6 +227,7 @@ export const exercicesData = [
     main_muscle_group: ["shoulders"],
     lesser_muscle_group: ["forearms"],
     necessary_equipment: ["dumbbell"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -227,6 +237,7 @@ export const exercicesData = [
     main_muscle_group: ["shoulders"],
     lesser_muscle_group: ["triceps"],
     necessary_equipment: ["none"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -236,6 +247,7 @@ export const exercicesData = [
     main_muscle_group: ["chest"],
     lesser_muscle_group: ["triceps"],
     necessary_equipment: ["none"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -245,6 +257,7 @@ export const exercicesData = [
     main_muscle_group: ["triceps"],
     lesser_muscle_group: ["forearms"],
     necessary_equipment: ["none"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -254,6 +267,7 @@ export const exercicesData = [
     main_muscle_group: ["triceps"],
     lesser_muscle_group: ["chest"],
     necessary_equipment: ["dumbbell", "bench"],
+    image: "image.jpg",
     isTimed: false,
   },
   /* core */
@@ -264,6 +278,7 @@ export const exercicesData = [
     main_muscle_group: ["abs"],
     lesser_muscle_group: [],
     necessary_equipment: ["none"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -273,6 +288,7 @@ export const exercicesData = [
     main_muscle_group: ["abs"],
     lesser_muscle_group: [],
     necessary_equipment: ["pull-up bar"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -282,6 +298,7 @@ export const exercicesData = [
     main_muscle_group: ["abs"],
     lesser_muscle_group: [],
     necessary_equipment: ["none"],
+    image: "image.jpg",
     isTimed: true,
   },
   {
@@ -291,6 +308,7 @@ export const exercicesData = [
     main_muscle_group: ["abs"],
     lesser_muscle_group: [],
     necessary_equipment: ["none"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -300,6 +318,7 @@ export const exercicesData = [
     main_muscle_group: ["abs"],
     lesser_muscle_group: [],
     necessary_equipment: ["none"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -309,6 +328,7 @@ export const exercicesData = [
     main_muscle_group: ["side abs"],
     lesser_muscle_group: [],
     necessary_equipment: ["none"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -318,6 +338,7 @@ export const exercicesData = [
     main_muscle_group: ["middle/lower back"],
     lesser_muscle_group: [],
     necessary_equipment: ["none"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -327,6 +348,7 @@ export const exercicesData = [
     main_muscle_group: ["abs"],
     lesser_muscle_group: ["middle/lower back"],
     necessary_equipment: ["none"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -336,6 +358,7 @@ export const exercicesData = [
     main_muscle_group: ["abs"],
     lesser_muscle_group: ["middle/lower back"],
     necessary_equipment: ["none"],
+    image: "image.jpg",
     isTimed: true,
   },
   {
@@ -345,6 +368,7 @@ export const exercicesData = [
     main_muscle_group: ["abs"],
     lesser_muscle_group: ["middle/lower back"],
     necessary_equipment: ["none"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -354,6 +378,7 @@ export const exercicesData = [
     main_muscle_group: ["abs"],
     lesser_muscle_group: [],
     necessary_equipment: ["none"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -363,6 +388,7 @@ export const exercicesData = [
     main_muscle_group: ["abs"],
     lesser_muscle_group: ["middle/lower back"],
     necessary_equipment: ["none"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -372,6 +398,7 @@ export const exercicesData = [
     main_muscle_group: ["abs"],
     lesser_muscle_group: ["middle/lower back"],
     necessary_equipment: ["none"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -381,6 +408,7 @@ export const exercicesData = [
     main_muscle_group: ["side abs"],
     lesser_muscle_group: [],
     necessary_equipment: ["dumbbell"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -390,6 +418,7 @@ export const exercicesData = [
     main_muscle_group: ["abs"],
     lesser_muscle_group: ["side abs"],
     necessary_equipment: ["dumbbell"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -399,6 +428,7 @@ export const exercicesData = [
     main_muscle_group: ["abs"],
     lesser_muscle_group: [],
     necessary_equipment: ["none"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -408,6 +438,7 @@ export const exercicesData = [
     main_muscle_group: ["abs"],
     lesser_muscle_group: [],
     necessary_equipment: ["none"],
+    image: "image.jpg",
     isTimed: true,
   },
   /* legs */
@@ -418,6 +449,7 @@ export const exercicesData = [
     main_muscle_group: ["lower legs"],
     lesser_muscle_group: ["glutes"],
     necessary_equipment: ["dumbbell"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -427,6 +459,7 @@ export const exercicesData = [
     main_muscle_group: ["upper legs"],
     lesser_muscle_group: ["glutes"],
     necessary_equipment: ["none"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -436,6 +469,7 @@ export const exercicesData = [
     main_muscle_group: ["upper legs"],
     lesser_muscle_group: ["glutes"],
     necessary_equipment: ["dumbbell"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -445,6 +479,7 @@ export const exercicesData = [
     main_muscle_group: ["glutes"],
     lesser_muscle_group: ["upper legs"],
     necessary_equipment: ["dumbbell"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -454,6 +489,7 @@ export const exercicesData = [
     main_muscle_group: ["upper legs"],
     lesser_muscle_group: ["glutes"],
     necessary_equipment: ["bench"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -463,6 +499,7 @@ export const exercicesData = [
     main_muscle_group: ["lower legs"],
     lesser_muscle_group: [],
     necessary_equipment: ["dumbbell"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -472,6 +509,7 @@ export const exercicesData = [
     main_muscle_group: ["glutes"],
     lesser_muscle_group: ["lower legs"],
     necessary_equipment: ["bench"],
+    image: "image.jpg",
     isTimed: false,
   },
   {
@@ -481,6 +519,7 @@ export const exercicesData = [
     main_muscle_group: ["lower legs"],
     lesser_muscle_group: [],
     necessary_equipment: ["none"],
+    image: "image.jpg",
     isTimed: false,
   },
 ];
