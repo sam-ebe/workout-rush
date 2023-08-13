@@ -3,6 +3,7 @@ import { Button } from "./Button";
 import { styled } from "styled-components";
 import Modal from "./Modal";
 import MuscleGroupList from "./MuscleGroupList";
+import ExercicesModalContent from "./ExercicesModalContent";
 
 const allMuscleGroup = ["Top", "Core", "Legs"];
 
@@ -12,10 +13,12 @@ function SessionSelect() {
     getRandomInArray(allMuscleGroup),
   ]);
   const [isSavedMuscleGroup, setIsSavedMuscleGroup] = useState(false);
-  const modalTitle = "Choose your Exercises";
 
   const handleOpen = () => {
-    setOpen(!open);
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const handleChangeMuscleGroup = (muscleGroup) => {
@@ -51,9 +54,9 @@ function SessionSelect() {
         </Selector>
         {/*Opens a modal*/}
         {/*search by categories*/}
-        {/*Inputs for number of reps*/}
+        {/*Inputs for number of reps, default 10*/}
         {/*Add Recommended number of exercises : 1-5 */}
-        <h2>{modalTitle}</h2>
+        <h2>Choose your Exercises</h2>
         <Selector>
           List
           <Button onClick={handleOpen}>Modify</Button>
@@ -71,7 +74,11 @@ function SessionSelect() {
           <Button>+</Button>
         </Selector>
         <Button>GO ! </Button>
-        {open && <Modal handleOpen={handleOpen} modalTitle={modalTitle} />}
+        {open && (
+          <Modal>
+            <ExercicesModalContent handleClose={handleClose} />
+          </Modal>
+        )}
       </StyledSessionSelect>
     </>
   );

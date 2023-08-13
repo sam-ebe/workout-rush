@@ -17,7 +17,7 @@ function MuscleGroupList({
 
   return (
     <>
-      <h2>Muscle group List</h2>
+      <h2>Selected Muscles Group</h2>
       <ul>
         {allMuscleGroup.map((item, index) => {
           return !isSavedMuscleGroup ? (
@@ -38,7 +38,7 @@ function MuscleGroupList({
         })}
       </ul>
 
-      <Button onClick={handleSave} disabled={selectedMuscleGroup.length < 1}>
+      <Button onClick={handleSave} disabled={selectedMuscleGroup.length === 0}>
         {!isSavedMuscleGroup ? "Save and load exercices" : "Modify"}
       </Button>
     </>

@@ -1,14 +1,10 @@
 import { styled } from "styled-components";
 import React from "react";
-import { Button } from "./Button";
 
-function Modal({ handleOpen, modalTitle }) {
+function Modal({ children }) {
   return (
     <Backdrop>
-      <StyledModal>
-        <h1>{modalTitle}</h1>
-        <Button onClick={handleOpen}>Save</Button>
-      </StyledModal>
+      <StyledModal>{children}</StyledModal>
     </Backdrop>
   );
 }
