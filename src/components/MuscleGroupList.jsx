@@ -39,7 +39,7 @@ function MuscleGroupList({
       </ul>
 
       <Button onClick={handleSave} disabled={selectedMuscleGroup.length === 0}>
-        {!isSavedMuscleGroup ? "Save and load exercices" : "Modify"}
+        {!isSavedMuscleGroup ? "Save and load Exercises" : "Modify"}
       </Button>
     </>
   );

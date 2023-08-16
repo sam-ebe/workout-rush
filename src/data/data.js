@@ -128,7 +128,7 @@ export const quizData = [
   },
 ];
 
-export const exercicesData = [
+export const exercisesData = [
   /* top, without bench*/
   {
     id: 1,
