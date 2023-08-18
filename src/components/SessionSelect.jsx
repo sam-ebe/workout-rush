@@ -22,6 +22,7 @@ function SessionSelect() {
   const [isSavedMuscleGroup, setIsSavedMuscleGroup] = useState(false);
   const [firstTimeSaved, setFirstTimeSaved] = useState(false);
 
+  let isEdition = open;
   useEffect(() => {
     if (isSavedMuscleGroup) {
       // data will be fetched there if coming from external source
@@ -63,12 +64,19 @@ function SessionSelect() {
     setIsSavedMuscleGroup(val);
   };
 
+  const updateSelectedExercises = (updatedExercises) => {
+    setSelectedExercises([...updatedExercises]);
+    console.log("saved");
+    setOpen(false);
+  };
+
   let necessaryEquipment = selectedExercises
     .flatMap((exercise) => exercise.necessary_equipment) // array with duplicates
     .filter((value, index, self) => {
       return self.indexOf(value) === index; // if the current value's first occurence is on this index, the value gets added to the array
     }); // array with unique values
 
+  console.log("rendered");
   return (
     <>
       <StyledSessionSelect>
@@ -122,6 +130,8 @@ function SessionSelect() {
                 <ExercisesModalContent
                   handleClose={handleClose}
                   selectedExercises={selectedExercises}
+                  isEdition={isEdition}
+                  updateSelectedExercises={updateSelectedExercises}
                 />
               </Modal>
             )}
