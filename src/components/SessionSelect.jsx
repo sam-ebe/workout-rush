@@ -26,7 +26,7 @@ function SessionSelect() {
     if (isSavedMuscleGroup) {
       // data will be fetched there if coming from external source
       console.log("effect setSelectedExercises");
-      const numberOfExercices = 3;
+      const numberOfExercices = 9;
 
       setSelectedExercises(
         getRandomExercisesByMuscleGroup(
@@ -154,39 +154,32 @@ function getRandomExercisesByMuscleGroup(
 ) {
   const randomExercisesArray = [];
 
-  // calculate proportional distribution of exercises per group
-  const exercisesPerGroup = Math.floor(
-    numberOfExercises / selectedMuscleGroup.length,
-  );
-
   const muscleGroupToIdsRemaining = { ...muscleGroupToIds };
 
   let totalAddedExercises = 0;
+  // iterate until the desired number of exercises for the array is reached
   while (totalAddedExercises < numberOfExercises) {
     selectedMuscleGroup.forEach((group) => {
-      // iterate until the desired number of exercises for this group is reached
-      for (let i = 0; i < exercisesPerGroup; i++) {
-        if (
-          totalAddedExercises < numberOfExercises &&
-          muscleGroupToIdsRemaining[group].length > 0
-        ) {
-          // get a random exercise id from the remaining ids for this group
-          const randomExerciseId = getRandomInArray(
-            muscleGroupToIdsRemaining[group],
-          );
-          // find the exercise with the given id in the exercisesData array
-          const randomExercise = exercisesData.find(
-            (exercise) => exercise.id === randomExerciseId,
-          );
+      if (
+        totalAddedExercises < numberOfExercises &&
+        muscleGroupToIdsRemaining[group].length > 0
+      ) {
+        // get a random exercise id from the remaining ids for this group
+        const randomExerciseId = getRandomInArray(
+          muscleGroupToIdsRemaining[group],
+        );
+        // find the exercise with the given id in the exercisesData array
+        const randomExercise = exercisesData.find(
+          (exercise) => exercise.id === randomExerciseId,
+        );
 
-          randomExercisesArray.push(randomExercise);
+        randomExercisesArray.push(randomExercise);
 
-          // remove the selected exercise id from the remaining ids
-          muscleGroupToIdsRemaining[group] = muscleGroupToIdsRemaining[
-            group
-          ].filter((id) => id !== randomExerciseId);
-          totalAddedExercises++;
-        }
+        // remove the selected exercise id from the remaining ids
+        muscleGroupToIdsRemaining[group] = muscleGroupToIdsRemaining[
+          group
+        ].filter((id) => id !== randomExerciseId);
+        totalAddedExercises++;
       }
     });
   }
