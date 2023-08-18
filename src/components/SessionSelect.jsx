@@ -26,7 +26,7 @@ function SessionSelect() {
     if (isSavedMuscleGroup) {
       // data will be fetched there if coming from external source
       console.log("effect setSelectedExercises");
-      const numberOfExercices = 9;
+      const numberOfExercices = 3;
 
       setSelectedExercises(
         getRandomExercisesByMuscleGroup(
@@ -63,6 +63,12 @@ function SessionSelect() {
     setIsSavedMuscleGroup(val);
   };
 
+  let necessaryEquipment = selectedExercises
+    .flatMap((exercise) => exercise.necessary_equipment) // array with duplicates
+    .filter((value, index, self) => {
+      return self.indexOf(value) === index; // if the current value's first occurence is on this index, the value gets added to the array
+    }); // array with unique values
+
   return (
     <>
       <StyledSessionSelect>
@@ -90,15 +96,19 @@ function SessionSelect() {
             {/*Add Recommended number of exercises : 1-5 */}
 
             <h2>Choose your Exercises</h2>
-            <Selector>
-              <ExercisesList selectedExercises={selectedExercises} />
-              <Button onClick={handleOpen}>Modify</Button>
-            </Selector>
-            {/* depends on selected exercises, comes from loaded exercises data*/}
-            <h2>Necessary Equipment List (based on the exercises list)</h2>
-            <Selector>
-              <p>None (just bodyweight)</p>
-            </Selector>
+            <ExercisesList selectedExercises={selectedExercises} />
+            <Button onClick={handleOpen}>Modify</Button>
+
+            <h2>Necessary Equipment List</h2>
+
+            {necessaryEquipment.length > 0 ? (
+              necessaryEquipment.map((equipment) => {
+                return <p key={equipment}>{equipment}</p>;
+              })
+            ) : (
+              <p>none</p>
+            )}
+
             {/* 5 per five, min 5 min*/}
             <h2>Duration</h2>
             <Selector>
@@ -129,7 +139,6 @@ function getRandomInArray(array) {
 }
 // Output format: { top: [1, 2, 3], core: [4, 5, 6], legs: [7, 8, 9] }
 function convertToMuscleGroupToIds(allMuscleGroup) {
-  console.log("converting");
   let muscleGroupToIds = {};
   allMuscleGroup.forEach((item) => {
     if (!muscleGroupToIds.hasOwnProperty(item.muscle_group)) {
@@ -183,7 +192,6 @@ function getRandomExercisesByMuscleGroup(
       }
     });
   }
-  console.log(randomExercisesArray);
   return randomExercisesArray;
 }
 
