@@ -17,11 +17,12 @@ const StyledModal = styled.div`
   height: 80%;
   background: white;
   margin: auto;
+  overflow: hidden;
 `;
 
 const Backdrop = styled.div`
   display: flex;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;

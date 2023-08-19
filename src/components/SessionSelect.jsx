@@ -5,12 +5,12 @@ import Modal from "./Modal";
 import MuscleGroupList from "./MuscleGroupList";
 import ExercisesModalContent from "./ExercisesModalContent";
 import ExercisesList from "./ExercisesList";
-import { exercisesData } from "../data/data";
+import { allExercisesData } from "../data/data";
 
 function SessionSelect() {
   const muscleGroupToIds = useMemo(() => {
-    return convertToMuscleGroupToIds(exercisesData);
-  }, [exercisesData]);
+    return convertToMuscleGroupToIds(allExercisesData);
+  }, [allExercisesData]);
 
   const allMuscleGroup = Object.keys(muscleGroupToIds);
 
@@ -32,7 +32,7 @@ function SessionSelect() {
       setSelectedExercises(
         getRandomExercisesByMuscleGroup(
           selectedMuscleGroup,
-          exercisesData,
+          allExercisesData,
           muscleGroupToIds,
           numberOfExercices,
         ),
@@ -132,6 +132,7 @@ function SessionSelect() {
                   selectedExercises={selectedExercises}
                   isEdition={isEdition}
                   updateSelectedExercises={updateSelectedExercises}
+                  allExercisesData={allExercisesData}
                 />
               </Modal>
             )}
@@ -167,7 +168,7 @@ function convertToMuscleGroupToIds(allMuscleGroup) {
 // while maintaining a proportional distribution of exercises from each muscle group
 function getRandomExercisesByMuscleGroup(
   selectedMuscleGroup,
-  exercisesData,
+  allExercisesData,
   muscleGroupToIds,
   numberOfExercises = 1,
 ) {
@@ -187,8 +188,8 @@ function getRandomExercisesByMuscleGroup(
         const randomExerciseId = getRandomInArray(
           muscleGroupToIdsRemaining[group],
         );
-        // find the exercise with the given id in the exercisesData array
-        const randomExercise = exercisesData.find(
+        // find the exercise with the given id in the allExercisesData array
+        const randomExercise = allExercisesData.find(
           (exercise) => exercise.id === randomExerciseId,
         );
 

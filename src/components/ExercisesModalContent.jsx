@@ -1,27 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "./Button";
 import ExercisesList from "./ExercisesList";
+import { styled } from "styled-components";
 
 function ExercisesModalContent({
   handleClose,
   selectedExercises,
-  allExercises,
+  allExercisesData,
   isEdition,
   updateSelectedExercises,
 }) {
+  const [isSearching, setIsSearching] = useState(false);
+  const handleIsSearching = () => {
+    setIsSearching((s) => !s);
+  };
   return (
-    <>
-      <h2>Choose your Exercises</h2>
+    <StyledExercisesModalContent>
       <Button onClick={handleClose}>Close</Button>
-      <input type="search" name="" id="" />
-      <Button>Add</Button>
+      <h2>Choose your Exercises</h2>
+
       <ExercisesList
         selectedExercises={selectedExercises}
         isEdition={isEdition}
         updateSelectedExercises={updateSelectedExercises}
+        allExercisesData={allExercisesData}
+        isSearching={isSearching}
+        handleIsSearching={handleIsSearching}
       />
-    </>
+    </StyledExercisesModalContent>
   );
 }
 
 export default ExercisesModalContent;
+
+const StyledExercisesModalContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+`;

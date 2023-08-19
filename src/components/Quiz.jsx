@@ -139,9 +139,7 @@ const Options = styled.ul`
   padding: 0 0 20px 0;
   display: flex;
   flex-direction: column;
-  & li {
-    list-style-type: none;
-  }
+  list-style-type: none;
 `;
 
 const StyledProgressBar = styled.div`
