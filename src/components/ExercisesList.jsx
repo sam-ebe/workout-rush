@@ -10,6 +10,7 @@ function ExercisesList({
   allExercisesData,
   isSearching = false,
   handleIsSearching,
+  selectedMuscleGroup,
 }) {
   const [selectedExercisesCopy, setSelectedExercisesCopy] = useState([]);
 
@@ -23,7 +24,7 @@ function ExercisesList({
     );
   };
 
-  const handleEdit = () => {};
+  const handleDetails = () => {};
   const handleReset = () => {
     setSelectedExercisesCopy([...selectedExercises]);
   };
@@ -45,7 +46,7 @@ function ExercisesList({
               {exercise.exercise_name}
               {isEdition && (
                 <>
-                  <Button onClick={handleEdit}>Edit</Button>
+                  <Button onClick={handleDetails}>Details</Button>
                   <Button onClick={() => handleDelete(exercise.id)}>
                     Delete
                   </Button>
@@ -71,6 +72,7 @@ function ExercisesList({
             allExercisesData={allExercisesData}
             selectedExercisesCopy={selectedExercisesCopy}
             updateSelectedExercisesCopy={updateSelectedExercisesCopy}
+            selectedMuscleGroup={selectedMuscleGroup}
           />
         </>
       )}

@@ -25,12 +25,12 @@ function MuscleGroupList({
               <input
                 type="checkbox"
                 name=""
-                id=""
+                id={`selected-muscle-${item}`}
                 value={item}
                 checked={selectedMuscleGroup.includes(item) ? true : false}
                 onChange={handleChange}
               />
-              <label htmlFor={item}>{item}</label>
+              <label htmlFor={`selected-muscle-${item}`}>{item}</label>
             </li>
           ) : (
             selectedMuscleGroup.includes(item) && <li key={index}>{item}</li>

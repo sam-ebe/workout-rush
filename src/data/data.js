@@ -151,6 +151,16 @@ export const allExercisesData = [
     isTimed: false,
   },
   {
+    id: 15,
+    exercise_name: "v sit",
+    muscle_group: "core",
+    main_muscle_group: ["abs"],
+    lesser_muscle_group: [],
+    necessary_equipment: [],
+    image: "image.jpg",
+    isTimed: false,
+  },
+  {
     id: 3,
     exercise_name: "pull-up",
     muscle_group: "top",
@@ -271,16 +281,6 @@ export const allExercisesData = [
     isTimed: false,
   },
   /* core */
-  {
-    id: 15,
-    exercise_name: "v sit",
-    muscle_group: "core",
-    main_muscle_group: ["abs"],
-    lesser_muscle_group: [],
-    necessary_equipment: [],
-    image: "image.jpg",
-    isTimed: false,
-  },
   {
     id: 16,
     exercise_name: "hanging leg raises",

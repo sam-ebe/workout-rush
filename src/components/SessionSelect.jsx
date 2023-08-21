@@ -28,15 +28,25 @@ function SessionSelect() {
       // data will be fetched there if coming from external source
       console.log("effect setSelectedExercises");
       const numberOfExercices = 3;
-
-      setSelectedExercises(
-        getRandomExercisesByMuscleGroup(
-          selectedMuscleGroup,
-          allExercisesData,
-          muscleGroupToIds,
-          numberOfExercices,
-        ),
-      );
+      // if the selectedExercises list is empty, populate it with random exercises
+      if (!selectedExercises.length > 0) {
+        setSelectedExercises(
+          getRandomExercisesByMuscleGroup(
+            selectedMuscleGroup,
+            allExercisesData,
+            muscleGroupToIds,
+            numberOfExercices,
+          ),
+        );
+      } else {
+        // if the selectedExercises list is already populated, remove exercises that don't match the selected Muscle Group
+        // the selectedExercises may end up empty (no error)
+        setSelectedExercises(
+          selectedExercises.filter((exercise) =>
+            selectedMuscleGroup.includes(exercise.muscle_group),
+          ),
+        );
+      }
     }
   }, [isSavedMuscleGroup]);
 
@@ -133,6 +143,7 @@ function SessionSelect() {
                   isEdition={isEdition}
                   updateSelectedExercises={updateSelectedExercises}
                   allExercisesData={allExercisesData}
+                  selectedMuscleGroup={selectedMuscleGroup}
                 />
               </Modal>
             )}

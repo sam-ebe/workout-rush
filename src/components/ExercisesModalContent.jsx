@@ -9,6 +9,7 @@ function ExercisesModalContent({
   allExercisesData,
   isEdition,
   updateSelectedExercises,
+  selectedMuscleGroup,
 }) {
   const [isSearching, setIsSearching] = useState(false);
   const handleIsSearching = () => {
@@ -26,6 +27,7 @@ function ExercisesModalContent({
         allExercisesData={allExercisesData}
         isSearching={isSearching}
         handleIsSearching={handleIsSearching}
+        selectedMuscleGroup={selectedMuscleGroup}
       />
     </StyledExercisesModalContent>
   );
