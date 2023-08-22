@@ -51,21 +51,7 @@ function SearchList({
   return (
     <StyledSearchList>
       <Filters>
-        <p>Filters</p>
-        {selectedMuscleGroup.map((item) => {
-          return (
-            <div key={item}>
-              <input
-                type="checkbox"
-                name=""
-                id={`filter-muscle-${item}`}
-                checked={true}
-                onChange={handleChange}
-              />
-              <label htmlFor={`filter-muscle-${item}`}>{item}</label>
-            </div>
-          );
-        })}
+        <p>{`Selected Muscles Groups: ${selectedMuscleGroup.join(" - ")}`}</p>
       </Filters>
       <StyledUl>
         {allExercisesDataCopy.map((exercise, index, self) => {
