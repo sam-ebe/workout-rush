@@ -36,7 +36,13 @@ function SessionSelect() {
             allExercisesData,
             muscleGroupToIds,
             numberOfExercices,
-          ),
+          ).map((exercise) => ({
+            ...exercise,
+            reps: 8, // Default reps
+            sets: 3, // Default sets
+            weight: 0, // Default weight
+            restTime: 60, // Default rest time in minutes
+          })),
         );
       } else {
         // if the selectedExercises list is already populated, remove exercises that don't match the selected Muscle Group
