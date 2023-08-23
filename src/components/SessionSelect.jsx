@@ -38,8 +38,8 @@ function SessionSelect() {
             numberOfExercices,
           ).map((exercise) => ({
             ...exercise,
-            reps: 8, // Default reps
             sets: 3, // Default sets
+            reps: exercise.isHold ? 60 : 8, // Default reps or holdTime
             weight: 0, // Default weight
             restTime: 60, // Default rest time in minutes
           })),
@@ -47,8 +47,8 @@ function SessionSelect() {
       } else {
         // if the selectedExercises list is already populated, remove exercises that don't match the selected Muscle Group
         // the selectedExercises may end up empty (no error)
-        setSelectedExercises(
-          selectedExercises.filter((exercise) =>
+        setSelectedExercises((prevExercises) =>
+          prevExercises.filter((exercise) =>
             selectedMuscleGroup.includes(exercise.muscle_group),
           ),
         );

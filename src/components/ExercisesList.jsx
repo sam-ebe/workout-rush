@@ -35,7 +35,15 @@ function ExercisesList({
   const updateSelectedExercisesCopy = (id) => {
     setSelectedExercisesCopy([
       ...selectedExercisesCopy,
-      ...allExercisesData.filter((exercise) => exercise.id === id),
+      ...allExercisesData
+        .filter((exercise) => exercise.id === id)
+        .map((exercise) => ({
+          ...exercise,
+          sets: 3, // Default sets
+          reps: exercise.isHold ? 60 : 8, // Default reps or holdTime
+          weight: 0, // Default weight
+          restTime: 60, // Default rest time in minutes
+        })),
     ]);
   };
   const handleInputChange = (id, property, value) => {
@@ -52,9 +60,10 @@ function ExercisesList({
           return (
             <li key={exercise.id}>
               <div>
-                <p>{exercise.exercise_name}</p>
+                <RepsFields isEdition={false} exercise={exercise} />
                 {isEdition && (
-                  <RepsInputs
+                  <RepsFields
+                    isEdition={isEdition}
                     handleInputChange={handleInputChange}
                     exercise={exercise}
                   />
@@ -98,32 +107,53 @@ function ExercisesList({
 
 export default ExercisesList;
 
-function RepsInputs({ handleInputChange, exercise }) {
+function RepsFields({ isEdition, handleInputChange, exercise }) {
   const inputFields = [
     { id: "sets", label: "sets", step: 1 },
-    { id: "reps", label: "reps" },
+    {
+      id: "reps",
+      label: exercise.isHold ? "sec" : "reps",
+      step: exercise.isHold ? 10 : 1,
+    },
     { id: "weight", label: "kg", step: 1 },
     { id: "restTime", label: "sec", step: 10 },
   ];
 
   return (
     <StyledRepsInputs>
-      {inputFields.map((field) => (
+      {inputFields.map((field, index) => (
         <React.Fragment key={field.id}>
-          <StyledRepsInput>
-            <input
-              type="number"
-              id={`${exercise.exercise_name}-${field.id}`}
-              value={exercise[field.id]}
-              step={field.step}
-              onChange={(e) =>
-                handleInputChange(exercise.id, field.id, e.target.value)
-              }
-            />
-            <label htmlFor={`${exercise.exercise_name}-${field.id}`}>
-              {field.label}
-            </label>
-          </StyledRepsInput>
+          {isEdition ? (
+            <StyledRepsInput>
+              <input
+                type="number"
+                id={`${exercise.exercise_name}-${field.id}`}
+                value={exercise[field.id]}
+                step={field.step}
+                onChange={(e) =>
+                  handleInputChange(exercise.id, field.id, e.target.value)
+                }
+              />
+              <label htmlFor={`${exercise.exercise_name}-${field.id}`}>
+                {field.label}
+              </label>
+            </StyledRepsInput>
+          ) : (
+            <>
+              {!(field.id === "weight" && !exercise.weight > 0) &&
+                !(field.id === "restTime") && (
+                  <>
+                    {index !== 0 && <span>&nbsp;x&nbsp;</span>}
+                    <p>{`${exercise[field.id]}${field.label} `}</p>
+                  </>
+                )}
+              {index === inputFields.length - 1 && (
+                <p className="exercise-name">
+                  &nbsp;{`${exercise.exercise_name}`}
+                </p>
+              )}
+            </>
+          )}
         </React.Fragment>
       ))}
     </StyledRepsInputs>
@@ -136,6 +166,9 @@ const StyledExercisesList = styled.ul`
     display: flex;
     margin: 8px;
   }
+  .exercise-name {
+    color: blue;
+  }
 `;
 
 const Flex = styled.div`
@@ -146,7 +179,7 @@ const StyledRepsInputs = styled.div`
   display: flex;
   align-items: center;
   & input {
-    max-width: 40px;
+    max-width: 50px;
   }
 `;
 

@@ -45,9 +45,6 @@ function SearchList({
 
   // display filters on top
   // mosaic allExercisesData with buttons Details and Add
-  // the selected have no Add button
-
-  const handleChange = (e) => {};
   return (
     <StyledSearchList>
       <Filters>

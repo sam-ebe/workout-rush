@@ -129,7 +129,6 @@ export const quizData = [
 ];
 
 export const allExercisesData = [
-  /* top, without bench*/
   {
     id: 1,
     exercise_name: "dumbbell bicep curls",
@@ -138,7 +137,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["forearms"],
     necessary_equipment: ["dumbbell"],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 2,
@@ -148,7 +147,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["forearms"],
     necessary_equipment: ["dumbbell"],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 15,
@@ -158,7 +157,7 @@ export const allExercisesData = [
     lesser_muscle_group: [],
     necessary_equipment: [],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 3,
@@ -168,7 +167,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["biceps"],
     necessary_equipment: ["pull-up bar"],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 4,
@@ -178,7 +177,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["triceps"],
     necessary_equipment: ["dumbbell"],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 5,
@@ -188,7 +187,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["shoulders"],
     necessary_equipment: [],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 6,
@@ -198,7 +197,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["forearms"],
     necessary_equipment: ["dumbbell"],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 7,
@@ -208,7 +207,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["biceps"],
     necessary_equipment: ["dumbbell"],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 8,
@@ -218,7 +217,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["forearms"],
     necessary_equipment: ["dumbbell"],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 9,
@@ -228,7 +227,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["shoulders"],
     necessary_equipment: ["dumbbell"],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 10,
@@ -238,7 +237,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["forearms"],
     necessary_equipment: ["dumbbell"],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 11,
@@ -248,7 +247,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["triceps"],
     necessary_equipment: [],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 12,
@@ -258,7 +257,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["triceps"],
     necessary_equipment: [],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 13,
@@ -268,7 +267,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["forearms"],
     necessary_equipment: [],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 14,
@@ -278,9 +277,8 @@ export const allExercisesData = [
     lesser_muscle_group: ["chest"],
     necessary_equipment: ["dumbbell", "bench"],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
-  /* core */
   {
     id: 16,
     exercise_name: "hanging leg raises",
@@ -289,7 +287,7 @@ export const allExercisesData = [
     lesser_muscle_group: [],
     necessary_equipment: ["pull-up bar"],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 17,
@@ -299,7 +297,7 @@ export const allExercisesData = [
     lesser_muscle_group: [],
     necessary_equipment: [],
     image: "image.jpg",
-    isTimed: true,
+    isHold: true,
   },
   {
     id: 18,
@@ -309,7 +307,7 @@ export const allExercisesData = [
     lesser_muscle_group: [],
     necessary_equipment: [],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 19,
@@ -319,7 +317,7 @@ export const allExercisesData = [
     lesser_muscle_group: [],
     necessary_equipment: [],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 20,
@@ -329,7 +327,7 @@ export const allExercisesData = [
     lesser_muscle_group: [],
     necessary_equipment: [],
     image: "image.jpg",
-    isTimed: false,
+    isHold: true,
   },
   {
     id: 21,
@@ -339,7 +337,7 @@ export const allExercisesData = [
     lesser_muscle_group: [],
     necessary_equipment: [],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 22,
@@ -349,7 +347,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["middle/lower back"],
     necessary_equipment: [],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 23,
@@ -359,7 +357,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["middle/lower back"],
     necessary_equipment: [],
     image: "image.jpg",
-    isTimed: true,
+    isHold: true,
   },
   {
     id: 24,
@@ -369,7 +367,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["middle/lower back"],
     necessary_equipment: [],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 25,
@@ -379,7 +377,7 @@ export const allExercisesData = [
     lesser_muscle_group: [],
     necessary_equipment: [],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 26,
@@ -389,7 +387,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["middle/lower back"],
     necessary_equipment: [],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 27,
@@ -399,7 +397,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["middle/lower back"],
     necessary_equipment: [],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 28,
@@ -409,7 +407,7 @@ export const allExercisesData = [
     lesser_muscle_group: [],
     necessary_equipment: ["dumbbell"],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 29,
@@ -419,7 +417,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["side abs"],
     necessary_equipment: ["dumbbell"],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 30,
@@ -429,7 +427,7 @@ export const allExercisesData = [
     lesser_muscle_group: [],
     necessary_equipment: [],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 31,
@@ -439,9 +437,8 @@ export const allExercisesData = [
     lesser_muscle_group: [],
     necessary_equipment: [],
     image: "image.jpg",
-    isTimed: true,
+    isHold: true,
   },
-  /* legs */
   {
     id: 32,
     exercise_name: "dumbbell deadlift",
@@ -450,7 +447,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["glutes"],
     necessary_equipment: ["dumbbell"],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 33,
@@ -460,7 +457,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["glutes"],
     necessary_equipment: [],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 34,
@@ -470,7 +467,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["glutes"],
     necessary_equipment: ["dumbbell"],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 35,
@@ -480,7 +477,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["upper legs"],
     necessary_equipment: ["dumbbell"],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 36,
@@ -490,7 +487,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["glutes"],
     necessary_equipment: ["bench"],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 37,
@@ -500,7 +497,7 @@ export const allExercisesData = [
     lesser_muscle_group: [],
     necessary_equipment: ["dumbbell"],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 38,
@@ -510,7 +507,7 @@ export const allExercisesData = [
     lesser_muscle_group: ["lower legs"],
     necessary_equipment: ["bench"],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
   {
     id: 39,
@@ -520,6 +517,6 @@ export const allExercisesData = [
     lesser_muscle_group: [],
     necessary_equipment: [],
     image: "image.jpg",
-    isTimed: false,
+    isHold: false,
   },
 ];
