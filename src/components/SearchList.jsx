@@ -21,6 +21,7 @@ function SearchList({
   }, [allExercisesData]);
 
   const filterSelectedMusclesGroupOnly = (exercisesArray) => {
+    console.log("filter");
     return exercisesArray.filter((exercise) =>
       selectedMuscleGroup.includes(exercise.muscle_group),
     );

@@ -21,8 +21,9 @@ function SessionSelect() {
   const [selectedExercises, setSelectedExercises] = useState([]);
   const [isSavedMuscleGroup, setIsSavedMuscleGroup] = useState(false);
   const [firstTimeSaved, setFirstTimeSaved] = useState(false);
-
+  const [estimatedDuration, setEstimatedDuration] = useState(0);
   let isEdition = open;
+
   useEffect(() => {
     if (isSavedMuscleGroup) {
       // data will be fetched there if coming from external source
@@ -55,6 +56,11 @@ function SessionSelect() {
       }
     }
   }, [isSavedMuscleGroup]);
+
+  useEffect(() => {
+    console.log("effect Estimated Duration");
+    setEstimatedDuration(getEstimateDuration(selectedExercises));
+  }, [selectedExercises]);
 
   const handleOpen = () => {
     setOpen(true);
@@ -134,12 +140,10 @@ function SessionSelect() {
             )}
 
             {/* 5 per five, min 5 min*/}
-            <h2>Duration</h2>
-            <Selector>
-              <Button>-</Button>
-              <p>20 min</p>
-              <Button>+</Button>
-            </Selector>
+            <h2>Estimated Duration</h2>
+
+            <p>{estimatedDuration}</p>
+
             <Button>GO ! </Button>
             {open && (
               <Modal>
@@ -164,6 +168,22 @@ export default SessionSelect;
 
 function getRandomInArray(array) {
   return array[Math.floor(Math.random() * array.length)];
+}
+
+function secondsToMinutes(seconds) {
+  let totalMinutes = Math.ceil(seconds / 60);
+  return totalMinutes;
+}
+function getEstimateDuration(selectedExercises) {
+  let duration = 0;
+  let endExerciseRestTime = 120;
+  selectedExercises.forEach((exercise) => {
+    let repTimePerSet = exercise.isHold ? 1 : exercise.reps * 6;
+    let totalExerciseTime = exercise.sets * (repTimePerSet + exercise.restTime);
+
+    duration += totalExerciseTime + endExerciseRestTime;
+  });
+  return secondsToMinutes(duration);
 }
 // Output format: { top: [1, 2, 3], core: [4, 5, 6], legs: [7, 8, 9] }
 function convertToMuscleGroupToIds(allMuscleGroup) {

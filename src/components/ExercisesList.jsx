@@ -33,6 +33,7 @@ function ExercisesList({
     updateSelectedExercises(selectedExercisesCopy);
   };
   const updateSelectedExercisesCopy = (id) => {
+    console.log("update updateSelectedExercisesCopy");
     setSelectedExercisesCopy([
       ...selectedExercisesCopy,
       ...allExercisesData
@@ -49,7 +50,9 @@ function ExercisesList({
   const handleInputChange = (id, property, value) => {
     setSelectedExercisesCopy((prevExercises) =>
       prevExercises.map((exercise) =>
-        exercise.id === id ? { ...exercise, [property]: value } : exercise,
+        exercise.id === id
+          ? { ...exercise, [property]: parseInt(value) }
+          : exercise,
       ),
     );
   };
