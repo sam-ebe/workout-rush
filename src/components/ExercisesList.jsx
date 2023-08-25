@@ -11,6 +11,7 @@ function ExercisesList({
   isSearching = false,
   handleIsSearching,
   selectedMuscleGroup,
+  exerciseNameOnly,
 }) {
   const [selectedExercisesCopy, setSelectedExercisesCopy] = useState([]);
 
@@ -63,7 +64,11 @@ function ExercisesList({
           return (
             <li key={exercise.id}>
               <div>
-                <RepsFields isEdition={false} exercise={exercise} />
+                <RepsFields
+                  isEdition={false}
+                  exercise={exercise}
+                  exerciseNameOnly={exerciseNameOnly}
+                />
                 {isEdition && (
                   <RepsFields
                     isEdition={isEdition}
@@ -110,7 +115,12 @@ function ExercisesList({
 
 export default ExercisesList;
 
-function RepsFields({ isEdition, handleInputChange, exercise }) {
+function RepsFields({
+  isEdition,
+  handleInputChange,
+  exercise,
+  exerciseNameOnly = false,
+}) {
   const inputFields = [
     { id: "sets", label: "sets", step: 1 },
     {
@@ -144,7 +154,8 @@ function RepsFields({ isEdition, handleInputChange, exercise }) {
           ) : (
             <>
               {!(field.id === "weight" && !exercise.weight > 0) &&
-                !(field.id === "restTime") && (
+                !(field.id === "restTime") &&
+                !exerciseNameOnly && (
                   <>
                     {index !== 0 && <span>&nbsp;x&nbsp;</span>}
                     <p>{`${exercise[field.id]}${field.label} `}</p>

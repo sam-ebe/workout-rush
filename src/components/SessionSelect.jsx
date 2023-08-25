@@ -154,6 +154,7 @@ function SessionSelect() {
                   updateSelectedExercises={updateSelectedExercises}
                   allExercisesData={allExercisesData}
                   selectedMuscleGroup={selectedMuscleGroup}
+                  exerciseNameOnly={true}
                 />
               </Modal>
             )}
