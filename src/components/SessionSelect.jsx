@@ -6,6 +6,7 @@ import MuscleGroupList from "./MuscleGroupList";
 import ExercisesModalContent from "./ExercisesModalContent";
 import ExercisesList from "./ExercisesList";
 import { allExercisesData } from "../data/data";
+import Session from "./Session";
 
 function SessionSelect() {
   const muscleGroupToIds = useMemo(() => {
@@ -22,6 +23,8 @@ function SessionSelect() {
   const [isSavedMuscleGroup, setIsSavedMuscleGroup] = useState(false);
   const [firstTimeSaved, setFirstTimeSaved] = useState(false);
   const [estimatedDuration, setEstimatedDuration] = useState(0);
+  const [showSession, setShowSession] = useState(false);
+
   let isEdition = open;
 
   useEffect(() => {
@@ -101,66 +104,69 @@ function SessionSelect() {
   console.log("rendered");
   return (
     <>
-      <StyledSessionSelect>
-        {/*after Save button will reload exercises from exercise list */}
-        <MuscleGroupList
-          allMuscleGroup={allMuscleGroup}
-          selectedMuscleGroup={selectedMuscleGroup}
-          handleChangeMuscleGroup={handleChangeMuscleGroup}
-          isSavedMuscleGroup={isSavedMuscleGroup}
-          handleSaveMuscleGroup={handleSaveMuscleGroup}
-        />
-        {(firstTimeSaved || isSavedMuscleGroup) && (
-          <>
-            {/* Changes only the number of reps/series (if displayed in the exercises list. For example : no numbers for AMRAP) and session duration */}
-            <h2>Session Type</h2>
-            <Selector>
-              <Button>{"<"}</Button>
-              <p>AMRAP</p>
-              <Button>{">"}</Button>
-            </Selector>
+      {!showSession && (
+        <StyledSessionSelect>
+          {/*after Save button will reload exercises from exercise list */}
+          <MuscleGroupList
+            allMuscleGroup={allMuscleGroup}
+            selectedMuscleGroup={selectedMuscleGroup}
+            handleChangeMuscleGroup={handleChangeMuscleGroup}
+            isSavedMuscleGroup={isSavedMuscleGroup}
+            handleSaveMuscleGroup={handleSaveMuscleGroup}
+          />
+          {(firstTimeSaved || isSavedMuscleGroup) && (
+            <>
+              {/* Changes only the number of reps/series (if displayed in the exercises list. For example : no numbers for AMRAP) and session duration */}
+              <h2>Session Type</h2>
+              <Selector>
+                <Button>{"<"}</Button>
+                <p>AMRAP</p>
+                <Button>{">"}</Button>
+              </Selector>
 
-            {/*Opens a modal*/}
-            {/*search by categories*/}
-            {/*Inputs for number of reps, default 10*/}
-            {/*Add Recommended number of exercises : 1-5 */}
+              {/*Opens a modal*/}
+              {/*search by categories*/}
+              {/*Inputs for number of reps, default 10*/}
+              {/*Add Recommended number of exercises : 1-5 */}
 
-            <h2>Choose your Exercises</h2>
-            <ExercisesList selectedExercises={selectedExercises} />
-            <Button onClick={handleOpen}>Modify</Button>
+              <h2>Choose your Exercises</h2>
+              <ExercisesList selectedExercises={selectedExercises} />
+              <Button onClick={handleOpen}>Modify</Button>
 
-            <h2>Necessary Equipment List</h2>
+              <h2>Necessary Equipment List</h2>
 
-            {necessaryEquipment.length > 0 ? (
-              necessaryEquipment.map((equipment) => {
-                return <p key={equipment}>{equipment}</p>;
-              })
-            ) : (
-              <p>none</p>
-            )}
+              {necessaryEquipment.length > 0 ? (
+                necessaryEquipment.map((equipment) => {
+                  return <p key={equipment}>{equipment}</p>;
+                })
+              ) : (
+                <p>none</p>
+              )}
 
-            {/* 5 per five, min 5 min*/}
-            <h2>Estimated Duration</h2>
+              {/* 5 per five, min 5 min*/}
+              <h2>Estimated Duration</h2>
 
-            <p>{estimatedDuration}</p>
+              <p>{estimatedDuration}</p>
 
-            <Button>GO ! </Button>
-            {open && (
-              <Modal>
-                <ExercisesModalContent
-                  handleClose={handleClose}
-                  selectedExercises={selectedExercises}
-                  isEdition={isEdition}
-                  updateSelectedExercises={updateSelectedExercises}
-                  allExercisesData={allExercisesData}
-                  selectedMuscleGroup={selectedMuscleGroup}
-                  exerciseNameOnly={true}
-                />
-              </Modal>
-            )}
-          </>
-        )}
-      </StyledSessionSelect>
+              <Button onClick={() => setShowSession(true)}>GO ! </Button>
+              {open && (
+                <Modal>
+                  <ExercisesModalContent
+                    handleClose={handleClose}
+                    selectedExercises={selectedExercises}
+                    isEdition={isEdition}
+                    updateSelectedExercises={updateSelectedExercises}
+                    allExercisesData={allExercisesData}
+                    selectedMuscleGroup={selectedMuscleGroup}
+                    exerciseNameOnly={true}
+                  />
+                </Modal>
+              )}
+            </>
+          )}
+        </StyledSessionSelect>
+      )}
+      {showSession && <Session selectedExercises={selectedExercises} />}
     </>
   );
 }
