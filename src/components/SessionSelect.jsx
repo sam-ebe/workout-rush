@@ -25,13 +25,14 @@ function SessionSelect() {
   const [estimatedDuration, setEstimatedDuration] = useState(0);
   const [showSession, setShowSession] = useState(false);
 
+  const numberOfExercices = 3;
   let isEdition = open;
 
   useEffect(() => {
     if (isSavedMuscleGroup) {
       // data will be fetched there if coming from external source
       console.log("effect setSelectedExercises");
-      const numberOfExercices = 3;
+
       // if the selectedExercises list is empty, populate it with random exercises
       if (!selectedExercises.length > 0) {
         setSelectedExercises(
@@ -59,6 +60,12 @@ function SessionSelect() {
       }
     }
   }, [isSavedMuscleGroup]);
+
+  useEffect(() => {
+    open
+      ? document.body.classList.add("no-scroll")
+      : document.body.classList.remove("no-scroll");
+  }, [open]);
 
   useEffect(() => {
     console.log("effect Estimated Duration");
