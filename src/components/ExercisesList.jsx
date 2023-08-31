@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Button } from "./Button";
 import SearchList from "./SearchList";
 import { styled } from "styled-components";
+import { DEFAULT_SET_COUNT } from "../utils/constants";
+import { clampValue } from "../utils/helpers";
 
 function ExercisesList({
   selectedExercises,
@@ -14,6 +16,7 @@ function ExercisesList({
   exerciseNameOnly,
 }) {
   const [selectedExercisesCopy, setSelectedExercisesCopy] = useState([]);
+  const [openIndividualSets, setOpenIndividualSets] = useState(false);
 
   useEffect(() => {
     console.log("effect ExercisesList");
@@ -26,7 +29,9 @@ function ExercisesList({
     );
   };
 
-  const handleDetails = () => {};
+  const handleOpenIndividualSets = (exerciseId) => {
+    setOpenIndividualSets((i) => !i);
+  };
   const handleReset = () => {
     setSelectedExercisesCopy([...selectedExercises]);
   };
@@ -41,22 +46,62 @@ function ExercisesList({
         .filter((exercise) => exercise.id === id)
         .map((exercise) => ({
           ...exercise,
-          sets: 3, // Default sets
-          reps: exercise.isHold ? 60 : 8, // Default reps or holdTime
-          weight: 0, // Default weight
-          restTime: 60, // Default rest time in minutes
+          // Default sets
+          sessionSets: Array(DEFAULT_SET_COUNT).fill(
+            exercise.isHold
+              ? { reps: 60, weight: 0, restTime: 60 }
+              : { reps: 8, weight: 0, restTime: 60 },
+          ),
         })),
     ]);
   };
+
+  // global input changes
   const handleInputChange = (id, property, value) => {
     setSelectedExercisesCopy((prevExercises) =>
       prevExercises.map((exercise) =>
         exercise.id === id
-          ? { ...exercise, [property]: parseInt(value) }
+          ? property === "sets"
+            ? exercise.sessionSets.length < value
+              ? addSetToExercise(exercise) // add a set
+              : removeLastSetFromExercise(exercise) // remove a set
+            : updatePropertyInAllSets(exercise, property, value) // update property in all sets
           : exercise,
       ),
     );
+
+    // add a new set to an exercise
+    const addSetToExercise = (exercise) => {
+      const newSet = exercise.isHold
+        ? { reps: 60, weight: 0, restTime: 60 }
+        : { reps: 8, weight: 0, restTime: 60 };
+
+      return {
+        ...exercise,
+        sessionSets: [...exercise.sessionSets, newSet],
+      };
+    };
+
+    // remove the last set from an exercise
+    const removeLastSetFromExercise = (exercise) => {
+      return {
+        ...exercise,
+        sessionSets: exercise.sessionSets.slice(0, -1),
+      };
+    };
+
+    // update a specific property in all sets of an exercise
+    const updatePropertyInAllSets = (exercise, property, value) => {
+      return {
+        ...exercise,
+        sessionSets: exercise.sessionSets.map((set) => ({
+          ...set,
+          [property]: clampValue(parseInt(value), 0),
+        })),
+      };
+    };
   };
+
   return (
     <>
       <StyledExercisesList>
@@ -76,10 +121,13 @@ function ExercisesList({
                     exercise={exercise}
                   />
                 )}
+                {isEdition && openIndividualSets && <p>individual sets</p>}
               </div>
               {isEdition && (
                 <>
-                  <Button onClick={handleDetails}>Details</Button>
+                  <Button onClick={() => handleOpenIndividualSets(exercise.id)}>
+                    Open Individual Sets
+                  </Button>
                   <Button onClick={() => handleDelete(exercise.id)}>
                     Delete
                   </Button>
@@ -132,6 +180,9 @@ function RepsFields({
     { id: "restTime", label: "sec", step: 10 },
   ];
 
+  const getFieldValues = (fieldId) =>
+    exercise.sessionSets.map((set) => set[fieldId]);
+
   return (
     <StyledRepsInputs>
       {inputFields.map((field, index) => (
@@ -141,7 +192,11 @@ function RepsFields({
               <input
                 type="number"
                 id={`${exercise.exercise_name}-${field.id}`}
-                value={exercise[field.id]}
+                value={
+                  field.id === "sets"
+                    ? exercise.sessionSets.length
+                    : exercise.sessionSets[0][field.id]
+                }
                 step={field.step}
                 onChange={(e) =>
                   handleInputChange(exercise.id, field.id, e.target.value)
@@ -153,12 +208,29 @@ function RepsFields({
             </StyledRepsInput>
           ) : (
             <>
-              {!(field.id === "weight" && !exercise.weight > 0) &&
-                !(field.id === "restTime") &&
+              {(field.id === "sets" ||
+                field.id === "reps" ||
+                (field.id === "weight" &&
+                  exercise.sessionSets.some((set) => set.weight > 0))) &&
                 !exerciseNameOnly && (
                   <>
                     {index !== 0 && <span>&nbsp;x&nbsp;</span>}
-                    <p>{`${exercise[field.id]}${field.label} `}</p>
+                    <span>
+                      {
+                        field.id === "sets"
+                          ? `${exercise.sessionSets.length}` // display sets count
+                          : !exercise.sessionSets.every(
+                              (set, setIndex) =>
+                                set[field.id] ===
+                                exercise.sessionSets[0][field.id],
+                            )
+                          ? `${Math.min(
+                              ...getFieldValues(field.id),
+                            )}-${Math.max(...getFieldValues(field.id))}`
+                          : `${exercise.sessionSets[0][field.id]}` // display property value from the first set because all identical
+                      }
+                      {field.label}
+                    </span>
                   </>
                 )}
               {index === inputFields.length - 1 && (

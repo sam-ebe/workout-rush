@@ -7,6 +7,12 @@ import ExercisesModalContent from "./ExercisesModalContent";
 import ExercisesList from "./ExercisesList";
 import { allExercisesData } from "../data/data";
 import Session from "./Session";
+import {
+  DEFAULT_EXERCISES_COUNT,
+  DEFAULT_SET_COUNT,
+  DEFAULT_1_REP_DURATION,
+  DEFAULT_END_EXERCISE_REST_DURATION,
+} from "../utils/constants";
 
 function SessionSelect() {
   const muscleGroupToIds = useMemo(() => {
@@ -25,7 +31,6 @@ function SessionSelect() {
   const [estimatedDuration, setEstimatedDuration] = useState(0);
   const [showSession, setShowSession] = useState(false);
 
-  const numberOfExercices = 3;
   let isEdition = open;
 
   useEffect(() => {
@@ -40,13 +45,14 @@ function SessionSelect() {
             selectedMuscleGroup,
             allExercisesData,
             muscleGroupToIds,
-            numberOfExercices,
           ).map((exercise) => ({
             ...exercise,
-            sets: 3, // Default sets
-            reps: exercise.isHold ? 60 : 8, // Default reps or holdTime
-            weight: 0, // Default weight
-            restTime: 60, // Default rest time in minutes
+            // Default sets
+            sessionSets: Array(DEFAULT_SET_COUNT).fill(
+              exercise.isHold
+                ? { reps: 60, weight: 0, restTime: 60 }
+                : { reps: 8, weight: 0, restTime: 60 },
+            ),
           })),
         );
       } else {
@@ -190,12 +196,22 @@ function secondsToMinutes(seconds) {
 }
 function getEstimateDuration(selectedExercises) {
   let duration = 0;
-  let endExerciseRestTime = 120;
-  selectedExercises.forEach((exercise) => {
-    let repTimePerSet = exercise.isHold ? 1 : exercise.reps * 6;
-    let totalExerciseTime = exercise.sets * (repTimePerSet + exercise.restTime);
 
-    duration += totalExerciseTime + endExerciseRestTime;
+  selectedExercises.forEach((exercise) => {
+    let totalReps = 0;
+    let totalRestTime = 0;
+    for (const set of exercise.sessionSets) {
+      totalReps += set.reps;
+      totalRestTime += set.restTime;
+    }
+
+    let totalSets = exercise.sessionSets.length;
+
+    let totalExerciseTime =
+      (exercise.isHold ? totalReps : totalReps * DEFAULT_1_REP_DURATION) +
+      totalRestTime;
+
+    duration += totalExerciseTime + DEFAULT_END_EXERCISE_REST_DURATION;
   });
   return secondsToMinutes(duration);
 }
@@ -221,7 +237,6 @@ function getRandomExercisesByMuscleGroup(
   selectedMuscleGroup,
   allExercisesData,
   muscleGroupToIds,
-  numberOfExercises = 1,
 ) {
   const randomExercisesArray = [];
 
@@ -229,10 +244,10 @@ function getRandomExercisesByMuscleGroup(
 
   let totalAddedExercises = 0;
   // iterate until the desired number of exercises for the array is reached
-  while (totalAddedExercises < numberOfExercises) {
+  while (totalAddedExercises < DEFAULT_EXERCISES_COUNT) {
     selectedMuscleGroup.forEach((group) => {
       if (
-        totalAddedExercises < numberOfExercises &&
+        totalAddedExercises < DEFAULT_EXERCISES_COUNT &&
         muscleGroupToIdsRemaining[group].length > 0
       ) {
         // get a random exercise id from the remaining ids for this group
