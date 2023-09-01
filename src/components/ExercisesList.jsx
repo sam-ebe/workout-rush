@@ -16,7 +16,7 @@ function ExercisesList({
   exerciseNameOnly,
 }) {
   const [selectedExercisesCopy, setSelectedExercisesCopy] = useState([]);
-  const [openIndividualSets, setOpenIndividualSets] = useState(false);
+  const [toggleIndividualSets, setToggleIndividualSets] = useState([]);
 
   useEffect(() => {
     console.log("effect ExercisesList");
@@ -29,8 +29,14 @@ function ExercisesList({
     );
   };
 
-  const handleOpenIndividualSets = (exerciseId) => {
-    setOpenIndividualSets((i) => !i);
+  const handleToggleIndividualSets = (exerciseId) => {
+    if (toggleIndividualSets.includes(exerciseId)) {
+      setToggleIndividualSets((prevToggleIndividualSets) => {
+        return prevToggleIndividualSets.filter((id) => id !== exerciseId);
+      });
+    } else {
+      setToggleIndividualSets([...toggleIndividualSets, exerciseId]);
+    }
   };
   const handleReset = () => {
     setSelectedExercisesCopy([...selectedExercises]);
@@ -102,6 +108,11 @@ function ExercisesList({
     };
   };
 
+  // individual input changes
+  const handleIndividualInputChange = () => {
+    return console.log("individual");
+  };
+
   return (
     <>
       <StyledExercisesList>
@@ -109,23 +120,30 @@ function ExercisesList({
           return (
             <li key={exercise.id}>
               <div>
-                <RepsFields
+                <MainRepsFields
                   isEdition={false}
                   exercise={exercise}
                   exerciseNameOnly={exerciseNameOnly}
                 />
                 {isEdition && (
-                  <RepsFields
+                  <MainRepsFields
                     isEdition={isEdition}
                     handleInputChange={handleInputChange}
                     exercise={exercise}
                   />
                 )}
-                {isEdition && openIndividualSets && <p>individual sets</p>}
+                {isEdition && toggleIndividualSets.includes(exercise.id) && (
+                  <IndividualRepsFields
+                    exercise={exercise}
+                    handleIndividualInputChange={handleIndividualInputChange}
+                  />
+                )}
               </div>
               {isEdition && (
                 <>
-                  <Button onClick={() => handleOpenIndividualSets(exercise.id)}>
+                  <Button
+                    onClick={() => handleToggleIndividualSets(exercise.id)}
+                  >
                     Open Individual Sets
                   </Button>
                   <Button onClick={() => handleDelete(exercise.id)}>
@@ -163,12 +181,15 @@ function ExercisesList({
 
 export default ExercisesList;
 
-function RepsFields({
+function MainRepsFields({
   isEdition,
   handleInputChange,
   exercise,
   exerciseNameOnly = false,
 }) {
+  const getFieldValues = (fieldId) =>
+    exercise.sessionSets.map((set) => set[fieldId]);
+
   const inputFields = [
     { id: "sets", label: "sets", step: 1 },
     {
@@ -179,9 +200,6 @@ function RepsFields({
     { id: "weight", label: "kg", step: 1 },
     { id: "restTime", label: "sec", step: 10 },
   ];
-
-  const getFieldValues = (fieldId) =>
-    exercise.sessionSets.map((set) => set[fieldId]);
 
   return (
     <StyledRepsInputs>
@@ -246,6 +264,48 @@ function RepsFields({
   );
 }
 
+function IndividualRepsFields({ exercise, handleIndividualInputChange }) {
+  return (
+    <div>
+      {exercise.sessionSets.map((set, index) => (
+        <IndividualRepsItem key={index}>
+          <label>S{index + 1}:&nbsp;</label>
+          <div>
+            <input
+              type="number"
+              value={set.reps}
+              onChange={(e) =>
+                handleIndividualInputChange(index, "reps", e.target.value)
+              }
+            />
+            <label>{exercise.isHold ? "sec" : "reps"}</label>
+          </div>
+          <div>
+            <input
+              type="number"
+              value={set.weight}
+              onChange={(e) =>
+                handleIndividualInputChange(index, "weight", e.target.value)
+              }
+            />
+            <label>kg</label>
+          </div>
+          <div>
+            <input
+              type="number"
+              value={set.restTime}
+              onChange={(e) =>
+                handleIndividualInputChange(index, "restTime", e.target.value)
+              }
+            />
+            <label>sec</label>
+          </div>
+        </IndividualRepsItem>
+      ))}
+    </div>
+  );
+}
+
 const StyledExercisesList = styled.ul`
   list-style-type: none;
   & li {
@@ -272,4 +332,14 @@ const StyledRepsInputs = styled.div`
 const StyledRepsInput = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const IndividualRepsItem = styled.div`
+  display: flex;
+  & input {
+    max-width: 50px;
+  }
+  & label {
+    white-space: nowrap;
+  }
 `;
