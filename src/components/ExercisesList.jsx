@@ -109,8 +109,29 @@ function ExercisesList({
   };
 
   // individual input changes
-  const handleIndividualInputChange = () => {
-    return console.log("individual");
+  const handleIndividualInputChange = (
+    exerciseId,
+    setIndex,
+    property,
+    value,
+  ) => {
+    setSelectedExercisesCopy((prevExercises) =>
+      prevExercises.map((exercise) =>
+        exercise.id === exerciseId
+          ? {
+              ...exercise,
+              sessionSets: exercise.sessionSets.map((set, index) =>
+                index === setIndex
+                  ? {
+                      ...set,
+                      [property]: clampValue(parseInt(value), 0),
+                    }
+                  : set,
+              ),
+            }
+          : exercise,
+      ),
+    );
   };
 
   return (
@@ -274,8 +295,14 @@ function IndividualRepsFields({ exercise, handleIndividualInputChange }) {
             <input
               type="number"
               value={set.reps}
+              step={exercise.isHold ? 10 : 1}
               onChange={(e) =>
-                handleIndividualInputChange(index, "reps", e.target.value)
+                handleIndividualInputChange(
+                  exercise.id,
+                  index,
+                  "reps",
+                  e.target.value,
+                )
               }
             />
             <label>{exercise.isHold ? "sec" : "reps"}</label>
@@ -285,7 +312,12 @@ function IndividualRepsFields({ exercise, handleIndividualInputChange }) {
               type="number"
               value={set.weight}
               onChange={(e) =>
-                handleIndividualInputChange(index, "weight", e.target.value)
+                handleIndividualInputChange(
+                  exercise.id,
+                  index,
+                  "weight",
+                  e.target.value,
+                )
               }
             />
             <label>kg</label>
@@ -294,8 +326,14 @@ function IndividualRepsFields({ exercise, handleIndividualInputChange }) {
             <input
               type="number"
               value={set.restTime}
+              step={10}
               onChange={(e) =>
-                handleIndividualInputChange(index, "restTime", e.target.value)
+                handleIndividualInputChange(
+                  exercise.id,
+                  index,
+                  "restTime",
+                  e.target.value,
+                )
               }
             />
             <label>sec</label>
