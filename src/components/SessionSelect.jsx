@@ -108,6 +108,43 @@ function SessionSelect() {
     setOpen(false);
   };
 
+  const updateSelectedExercisesEditingSet = (
+    exerciseIndex,
+    setIndex,
+    newReps,
+    newWeight,
+  ) => {
+    setSelectedExercises((prevExercises) =>
+      prevExercises.map((exercise, index) =>
+        exerciseIndex === index
+          ? {
+              ...exercise,
+              sessionSets: exercise.sessionSets.map((set, sIndex) =>
+                setIndex === sIndex
+                  ? { ...set, reps: newReps, weight: newWeight }
+                  : set,
+              ),
+            }
+          : exercise,
+      ),
+    );
+  };
+
+  const deleteSelectedExercisesEditingSet = (exerciseIndex, setIndex) => {
+    setSelectedExercises((prevExercises) =>
+      prevExercises.map((exercise, index) =>
+        exerciseIndex === index
+          ? {
+              ...exercise,
+              sessionSets: exercise.sessionSets.filter(
+                (set, sIndex) => !(setIndex === sIndex),
+              ),
+            }
+          : exercise,
+      ),
+    );
+  };
+
   let necessaryEquipment = selectedExercises
     .flatMap((exercise) => exercise.necessary_equipment) // array with duplicates
     .filter((value, index, self) => {
@@ -179,7 +216,13 @@ function SessionSelect() {
           )}
         </StyledSessionSelect>
       )}
-      {showSession && <Session selectedExercises={selectedExercises} />}
+      {showSession && (
+        <Session
+          selectedExercises={selectedExercises}
+          updateSelectedExercisesEditingSet={updateSelectedExercisesEditingSet}
+          deleteSelectedExercisesEditingSet={deleteSelectedExercisesEditingSet}
+        />
+      )}
     </>
   );
 }

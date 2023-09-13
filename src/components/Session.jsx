@@ -2,29 +2,15 @@ import React, { useState } from "react";
 import { Button } from "./Button";
 import { styled } from "styled-components";
 
-function Session({ selectedExercises }) {
+function Session({
+  selectedExercises,
+  updateSelectedExercisesEditingSet,
+  deleteSelectedExercisesEditingSet,
+}) {
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
-  const [exerciseSets, setExerciseSets] = useState([]);
+
   const [currentSetIndex, setCurrentSetIndex] = useState(0);
   const [endedSession, setEndedSession] = useState(false);
-  const [editedSets, setEditedSets] = useState({});
-  // display in EndSession : your session infos that will be saved :
-  /*
-  squat
-  set 1: 8 reps x 20 kg Edit (edit will activate inputs only fot the corresponding line, after click on Edit : Save and Cancel buttons are displayed)
-  set 2: 8 reps x 20 kg Edit 
-  set 3: 8 reps x 20 kg Edit Delete (delete only on the last set)
-
-  bicep curl
-  set 1: 8 reps x 20 kg Edit
-  set 2: 8 reps x 20 kg Edit
-  set 3: 8 reps x 20 kg Edit Delete (delete only on the last set)
-  
-  Save
-
-
-  */
-
   const currentExercise = selectedExercises[currentExerciseIndex];
 
   const handleNext = (exercise) => {
@@ -32,18 +18,6 @@ function Session({ selectedExercises }) {
       reps: exercise.reps,
       weight: exercise.weight,
     };
-
-    // add the current set to exerciseSets
-    const updatedExerciseSets = [...exerciseSets];
-    if (!updatedExerciseSets[currentExerciseIndex]) {
-      updatedExerciseSets[currentExerciseIndex] = {
-        exercise_name: currentExercise.exercise_name,
-        sessionSets: [],
-      };
-    }
-    updatedExerciseSets[currentExerciseIndex].sessionSets.push(newSet);
-    setExerciseSets(updatedExerciseSets);
-    console.log(exerciseSets);
 
     if (currentSetIndex < currentExercise.sessionSets.length - 1) {
       setCurrentSetIndex(currentSetIndex + 1);
@@ -59,183 +33,31 @@ function Session({ selectedExercises }) {
     }
   };
 
-  const handleEditSessionSet = (exerciseIndex, setIndex) => {
-    const updatedSets = [...exerciseSets];
-    updatedSets[exerciseIndex].sessionSets[setIndex].editing = true;
-
-    setExerciseSets(updatedSets);
-
-    // reset edited value to original value
-    const editedSetKey = `${exerciseIndex}-${setIndex}`;
-    const newEditedSets = { ...editedSets };
-    delete newEditedSets[editedSetKey];
-    setEditedSets(newEditedSets);
-  };
-
-  const handleSaveSessionSet = (
-    exerciseIndex,
-    setIndex,
-    newReps,
-    newWeight,
-  ) => {
-    const updatedSets = [...exerciseSets];
-    updatedSets[exerciseIndex].sessionSets[setIndex].reps = newReps;
-    updatedSets[exerciseIndex].sessionSets[setIndex].weight = newWeight;
-    updatedSets[exerciseIndex].sessionSets[setIndex].editing = false;
-
-    setExerciseSets(updatedSets);
-
-    // remove edited value for the saved set
-    const newEditedSets = { ...editedSets };
-    delete newEditedSets[exerciseIndex];
-    setEditedSets(newEditedSets);
-  };
-
-  const handleCancelSessionSet = (exerciseIndex, setIndex) => {
-    const updatedSets = [...exerciseSets];
-    updatedSets[exerciseIndex].sessionSets[setIndex].editing = false;
-    setExerciseSets(updatedSets);
-  };
-
-  const handleDeleteSessionSet = (exerciseIndex, setIndex) => {
-    const updatedSets = [...exerciseSets];
-    updatedSets[exerciseIndex].sessionSets.splice(setIndex, 1);
-
-    if (updatedSets[exerciseIndex].sessionSets.length === 0) {
-      updatedSets.splice(exerciseIndex, 1);
-    }
-
-    setExerciseSets(updatedSets);
-  };
-
-  const handleSessionChange = (exerciseIndex, setIndex, newReps, newWeight) => {
-    const editedSetKey = `${exerciseIndex}-${setIndex}`;
-    setEditedSets({
-      ...editedSets,
-      [editedSetKey]: {
-        reps: newReps,
-        weight: newWeight,
-      },
-    });
-  };
-
   return (
     <>
       <h2>Workout Session</h2>
       {!endedSession ? (
         <>
-          <button onClick={() => handleNext(currentExercise)}>
+          <Button onClick={() => handleNext(currentExercise)}>
             {currentSetIndex < currentExercise.sessionSets.length - 1
               ? "Next Set"
               : "Next Exercise"}
-          </button>
+          </Button>
 
           <SessionHistory
             selectedExercises={selectedExercises}
             currentExerciseIndex={currentExerciseIndex}
             currentSetIndex={currentSetIndex}
+            updateSelectedExercisesEditingSet={
+              updateSelectedExercisesEditingSet
+            }
+            deleteSelectedExercisesEditingSet={
+              deleteSelectedExercisesEditingSet
+            }
           />
         </>
       ) : (
         <>
-          <div>
-            <h3>Session Ended</h3>
-            <p>Congratulations on completing your workout session!</p>
-            <p>Total Workout Time: 30min</p>
-            {exerciseSets.map((exercise, exerciseIndex) => (
-              <div key={exerciseIndex}>
-                <h3>{exercise.exercise_name}</h3>
-                {exercise.sessionSets.map((sessionSet, sessionSetIndex) => (
-                  <div key={sessionSetIndex}>
-                    {sessionSet.editing ? (
-                      <>
-                        <input
-                          type="number"
-                          value={
-                            editedSets[`${exerciseIndex}-${sessionSetIndex}`]
-                              ?.reps ?? sessionSet.reps
-                          }
-                          onChange={(e) =>
-                            handleSessionChange(
-                              exerciseIndex,
-                              sessionSetIndex,
-                              e.target.value,
-                              editedSets[`${exerciseIndex}-${sessionSetIndex}`]
-                                ?.weight ?? sessionSet.weight,
-                            )
-                          }
-                        />
-                        <input
-                          type="number"
-                          value={
-                            editedSets[`${exerciseIndex}-${sessionSetIndex}`]
-                              ?.weight ?? sessionSet.weight
-                          }
-                          onChange={(e) =>
-                            handleSessionChange(
-                              exerciseIndex,
-                              sessionSetIndex,
-                              editedSets[`${exerciseIndex}-${sessionSetIndex}`]
-                                ?.reps ?? sessionSet.reps,
-                              e.target.value,
-                            )
-                          }
-                        />
-
-                        <button
-                          onClick={() =>
-                            handleSaveSessionSet(
-                              exerciseIndex,
-                              sessionSetIndex,
-                              sessionSet.reps,
-                              sessionSet.weight,
-                            )
-                          }
-                        >
-                          Save
-                        </button>
-                        <button
-                          onClick={() =>
-                            handleCancelSessionSet(
-                              exerciseIndex,
-                              sessionSetIndex,
-                            )
-                          }
-                        >
-                          Cancel
-                        </button>
-                      </>
-                    ) : (
-                      <p>
-                        set {sessionSetIndex + 1}: {sessionSet.reps} reps x{" "}
-                        {sessionSet.weight} kg{" "}
-                        <Button
-                          onClick={() =>
-                            handleEditSessionSet(exerciseIndex, sessionSetIndex)
-                          }
-                        >
-                          Edit
-                        </Button>{" "}
-                        {sessionSetIndex ===
-                          exercise.sessionSets.length - 1 && (
-                          <Button
-                            onClick={() =>
-                              handleDeleteSessionSet(
-                                exerciseIndex,
-                                sessionSetIndex,
-                              )
-                            }
-                          >
-                            Delete
-                          </Button>
-                        )}
-                      </p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
           <Button
             onClick={() =>
               alert("Yep, let's go somewhere. An imaginary Home page?")
@@ -253,30 +75,177 @@ function SessionHistory({
   selectedExercises,
   currentExerciseIndex,
   currentSetIndex,
+  updateSelectedExercisesEditingSet,
+  deleteSelectedExercisesEditingSet,
 }) {
+  // array of [exercise id, set id] that are currently in editing state, but unsaved
+  const [editingSets, setEditingSets] = useState([]);
+
+  const handleEditSessionSet = (exerciseIndex, setIndex) => {
+    // get reps and weight from selectedExercises
+    const { reps, weight } =
+      selectedExercises[exerciseIndex].sessionSets[setIndex];
+
+    const newEditingSet = {
+      exerciseId: exerciseIndex,
+      setId: setIndex,
+      reps: reps,
+      weight: weight,
+    };
+
+    setEditingSets((prevSets) => [...prevSets, newEditingSet]);
+  };
+
+  const handleCancelSessionSet = (exerciseIndex, setIndex) => {
+    setEditingSets((prevSets) =>
+      prevSets.filter(
+        (set) => !(set.exerciseId === exerciseIndex && set.setId === setIndex),
+      ),
+    );
+  };
+
+  const handleSessionChange = (exerciseIndex, setIndex, newReps, newWeight) => {
+    setEditingSets((prevSets) =>
+      prevSets.map((set) =>
+        set.exerciseId === exerciseIndex && set.setId === setIndex
+          ? { ...set, reps: newReps, weight: newWeight }
+          : set,
+      ),
+    );
+  };
+
+  const handleDeleteSessionSet = (exerciseIndex, setIndex) => {
+    setEditingSets((prevSets) =>
+      prevSets.filter(
+        (set) => !(set.exerciseId === exerciseIndex && set.setId === setIndex),
+      ),
+    );
+    deleteSelectedExercisesEditingSet(exerciseIndex, setIndex);
+  };
+
+  const handleSaveSessionSet = (exerciseIndex, setIndex) => {
+    const newReps =
+      editingSets[editingSetsFindIndex(exerciseIndex, setIndex)].reps;
+    const newWeight =
+      editingSets[editingSetsFindIndex(exerciseIndex, setIndex)].weight;
+    updateSelectedExercisesEditingSet(
+      exerciseIndex,
+      setIndex,
+      newReps,
+      newWeight,
+    );
+    handleCancelSessionSet(exerciseIndex, setIndex);
+  };
+  // display editable input if the Edit button has been clicked for this set
+  const editingSetsFindIndex = (exerciseIndex, setIndex) => {
+    return editingSets.findIndex(
+      (set) => set.exerciseId === exerciseIndex && set.setId === setIndex,
+    );
+  };
+
   return (
     <ul>
       {selectedExercises.map((exercise, exerciseIndex) => (
         <li key={`${exerciseIndex}-${exercise.exercise_name}`}>
           <h3>Exercise: {exercise.exercise_name}</h3>
           <ul>
-            {exercise.sessionSets.map((set, setIndex) => (
-              <StyledLi
-                key={`${exerciseIndex}-${setIndex}`}
-                $inactive={
-                  (exerciseIndex === currentExerciseIndex &&
-                    setIndex > currentSetIndex) ||
-                  exerciseIndex > currentExerciseIndex
-                }
-                $current={
-                  exerciseIndex === currentExerciseIndex &&
-                  setIndex === currentSetIndex
-                }
-              >
-                Set {setIndex + 1}: {set.reps}
-                {exercise.isHold ? " sec" : " reps"} x {set.weight} kg
-              </StyledLi>
-            ))}
+            {exercise.sessionSets.map((set, setIndex) => {
+              const current =
+                exerciseIndex === currentExerciseIndex &&
+                setIndex === currentSetIndex;
+              const inactive =
+                (exerciseIndex === currentExerciseIndex &&
+                  setIndex > currentSetIndex) ||
+                exerciseIndex > currentExerciseIndex;
+              return (
+                <StyledLi
+                  key={`${exerciseIndex}-${setIndex}`}
+                  $inactive={inactive}
+                  $current={current}
+                >
+                  {editingSetsFindIndex(exerciseIndex, setIndex) !== -1 ? (
+                    <>
+                      <span>Set {setIndex + 1}: </span>
+
+                      <input
+                        type="number"
+                        value={
+                          editingSets[
+                            editingSetsFindIndex(exerciseIndex, setIndex)
+                          ].reps
+                        }
+                        onChange={(e) =>
+                          handleSessionChange(
+                            exerciseIndex,
+                            setIndex,
+                            e.target.value,
+                            editingSets[
+                              editingSetsFindIndex(exerciseIndex, setIndex)
+                            ].weight,
+                          )
+                        }
+                      />
+                      <input
+                        type="number"
+                        value={
+                          editingSets[
+                            editingSetsFindIndex(exerciseIndex, setIndex)
+                          ].weight
+                        }
+                        onChange={(e) =>
+                          handleSessionChange(
+                            exerciseIndex,
+                            setIndex,
+                            editingSets[
+                              editingSetsFindIndex(exerciseIndex, setIndex)
+                            ].reps,
+                            e.target.value,
+                          )
+                        }
+                      />
+
+                      <button
+                        onClick={() =>
+                          handleSaveSessionSet(exerciseIndex, setIndex)
+                        }
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleCancelSessionSet(exerciseIndex, setIndex)
+                        }
+                      >
+                        Cancel
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      {set.reps}
+                      {exercise.isHold ? " sec" : " reps"} x {set.weight} kg
+                      {!inactive && !current && (
+                        <>
+                          <Button
+                            onClick={() =>
+                              handleEditSessionSet(exerciseIndex, setIndex)
+                            }
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            onClick={() =>
+                              handleDeleteSessionSet(exerciseIndex, setIndex)
+                            }
+                          >
+                            Delete
+                          </Button>
+                        </>
+                      )}
+                    </>
+                  )}
+                </StyledLi>
+              );
+            })}
           </ul>
         </li>
       ))}
