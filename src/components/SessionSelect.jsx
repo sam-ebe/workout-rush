@@ -166,17 +166,6 @@ function SessionSelect() {
           />
           {(firstTimeSaved || isSavedMuscleGroup) && (
             <>
-              {/* Changes only the number of reps/series (if displayed in the exercises list. For example : no numbers for AMRAP) and session duration */}
-              <h2>Session Type</h2>
-              <Selector>
-                <Button>{"<"}</Button>
-                <p>AMRAP</p>
-                <Button>{">"}</Button>
-              </Selector>
-
-              {/*Opens a modal*/}
-              {/*search by categories*/}
-              {/*Inputs for number of reps, default 10*/}
               {/*Add Recommended number of exercises : 1-5 */}
 
               <h2>Choose your Exercises</h2>
