@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "./Button";
 import { styled } from "styled-components";
+import spinner from "./../assets/spinner.svg";
 
 function Session({
   selectedExercises,
@@ -36,36 +37,29 @@ function Session({
   return (
     <>
       <h2>Workout Session</h2>
-      {!endedSession ? (
-        <>
-          <Button onClick={() => handleNext(currentExercise)}>
-            {currentSetIndex < currentExercise.sessionSets.length - 1
-              ? "Next Set"
-              : "Next Exercise"}
-          </Button>
-
-          <SessionHistory
-            selectedExercises={selectedExercises}
-            currentExerciseIndex={currentExerciseIndex}
-            currentSetIndex={currentSetIndex}
-            updateSelectedExercisesEditingSet={
-              updateSelectedExercisesEditingSet
-            }
-            deleteSelectedExercisesEditingSet={
-              deleteSelectedExercisesEditingSet
-            }
-          />
-        </>
-      ) : (
-        <>
-          <Button
-            onClick={() =>
-              alert("Yep, let's go somewhere. An imaginary Home page?")
-            }
-          >
-            Back to Home
-          </Button>
-        </>
+      {!endedSession && (
+        <Button onClick={() => handleNext(currentExercise)}>
+          {currentSetIndex < currentExercise.sessionSets.length - 1
+            ? "Next Set"
+            : "Next Exercise"}
+        </Button>
+      )}
+      <SessionHistory
+        selectedExercises={selectedExercises}
+        currentExerciseIndex={currentExerciseIndex}
+        currentSetIndex={currentSetIndex}
+        updateSelectedExercisesEditingSet={updateSelectedExercisesEditingSet}
+        deleteSelectedExercisesEditingSet={deleteSelectedExercisesEditingSet}
+        endedSession={endedSession}
+      />
+      {endedSession && (
+        <Button
+          onClick={() =>
+            alert("Yep, let's go somewhere. An imaginary Home page?")
+          }
+        >
+          Back to Home
+        </Button>
       )}
     </>
   );
@@ -77,6 +71,7 @@ function SessionHistory({
   currentSetIndex,
   updateSelectedExercisesEditingSet,
   deleteSelectedExercisesEditingSet,
+  endedSession,
 }) {
   // array of [exercise id, set id] that are currently in editing state, but unsaved
   const [editingSets, setEditingSets] = useState([]);
@@ -162,6 +157,7 @@ function SessionHistory({
                   key={`${exerciseIndex}-${setIndex}`}
                   $inactive={inactive}
                   $current={current}
+                  $endedSession={endedSession}
                 >
                   {editingSetsFindIndex(exerciseIndex, setIndex) !== -1 ? (
                     <>
@@ -223,7 +219,10 @@ function SessionHistory({
                     <>
                       {set.reps}
                       {exercise.isHold ? " sec" : " reps"} x {set.weight} kg
-                      {!inactive && !current && (
+                      {current && !endedSession && (
+                        <SpinnerImg src={spinner} alt="In progress..." />
+                      )}
+                      {!inactive && (
                         <>
                           <Button
                             onClick={() =>
@@ -256,6 +255,14 @@ function SessionHistory({
 export default Session;
 
 const StyledLi = styled.li`
+  display: flex;
+  align-items: center;
   opacity: ${(props) => (props.$inactive ? 0.3 : 1)};
-  font-size: ${(props) => (props.$current ? "2rem" : "1rem")};
+  font-size: ${(props) =>
+    props.$current && !props.$endedSession ? "2rem" : "1rem"};
+  transition: all 0.2s ease-out;
+`;
+const SpinnerImg = styled.img`
+  height: 2rem;
+  margin: 0 8px;
 `;
