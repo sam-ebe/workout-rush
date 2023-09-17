@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button } from "./Button";
 import { styled } from "styled-components";
 import spinner from "./../assets/spinner.svg";
+import SessionTimer from "./SessionTimer";
 
 function Session({
   selectedExercises,
@@ -9,17 +10,11 @@ function Session({
   deleteSelectedExercisesEditingSet,
 }) {
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
-
   const [currentSetIndex, setCurrentSetIndex] = useState(0);
   const [endedSession, setEndedSession] = useState(false);
   const currentExercise = selectedExercises[currentExerciseIndex];
 
-  const handleNext = (exercise) => {
-    const newSet = {
-      reps: exercise.reps,
-      weight: exercise.weight,
-    };
-
+  const handleNext = () => {
     if (currentSetIndex < currentExercise.sessionSets.length - 1) {
       setCurrentSetIndex(currentSetIndex + 1);
     } else {
@@ -37,8 +32,9 @@ function Session({
   return (
     <>
       <h2>Workout Session</h2>
+      <SessionTimer endedSession={endedSession} />
       {!endedSession && (
-        <Button onClick={() => handleNext(currentExercise)}>
+        <Button onClick={() => handleNext()}>
           {currentSetIndex < currentExercise.sessionSets.length - 1
             ? "Next Set"
             : "Next Exercise"}
