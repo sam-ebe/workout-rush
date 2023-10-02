@@ -336,8 +336,8 @@ function getRandomExercisesByMuscleGroup(
         muscleGroupToIdsRemaining[group] = muscleGroupToIdsRemaining[
           group
         ].filter((id) => id !== randomExerciseId);
-        totalAddedExercises++;
       }
+      totalAddedExercises++;
     });
   }
   return randomExercisesArray;
