@@ -10,7 +10,7 @@ function SessionTimer({ endedSession }) {
     }, 1000);
 
     if (endedSession === true) {
-      return clearInterval(intervalId);
+      clearInterval(intervalId);
     }
 
     return () => {

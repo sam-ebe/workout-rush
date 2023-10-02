@@ -2,28 +2,28 @@ import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { Button } from "./Button";
 function SearchList({
-  allExercisesData,
+  allExercises,
   selectedExercisesCopy,
   updateSelectedExercisesCopy,
   selectedMuscleGroup,
 }) {
   // passing selectedExercisesCopy because the user may have deleted some exercises without saving
 
-  // copy allExercisesData to perform sortings
+  // copy allExercises to perform sortings
   // keep only exercises corresponding to selected Muscles Group
-  const [allExercisesDataCopy, setAllExercisesDataCopy] = useState([]);
+  const [allExercisesCopy, setAllExercisesCopy] = useState([]);
   useEffect(() => {
-    setAllExercisesDataCopy(
+    setAllExercisesCopy(
       sortByMuscleGroupAndName(
-        filterSelectedMusclesGroupOnly([...allExercisesData]),
+        filterSelectedMusclesGroupOnly([...allExercises]),
       ),
     );
-  }, [allExercisesData]);
+  }, [allExercises]);
 
   const filterSelectedMusclesGroupOnly = (exercisesArray) => {
     console.log("filter");
     return exercisesArray.filter((exercise) =>
-      selectedMuscleGroup.includes(exercise.muscle_group),
+      selectedMuscleGroup.includes(exercise.bodyPart),
     );
   };
 
@@ -32,35 +32,34 @@ function SearchList({
   };
 
   const compareMuscleGroupAndName = (a, b) => {
-    if (a.muscle_group === b.muscle_group) {
+    if (a.bodyPart === b.bodyPart) {
       return compareExerciseName(a, b);
     }
-    return a.muscle_group > b.muscle_group ? 1 : -1;
+    return a.bodyPart > b.bodyPart ? 1 : -1;
   };
 
-  const compareExerciseName = (a, b) =>
-    a.exercise_name > b.exercise_name ? 1 : -1;
+  const compareExerciseName = (a, b) => (a.name > b.name ? 1 : -1);
 
   // by main muscle
   // by equipment
 
   // display filters on top
-  // mosaic allExercisesData with buttons Details and Add
+  // mosaic allExercises with buttons Details and Add
   return (
     <StyledSearchList>
       <Filters>
         <p>{`Selected Muscles Groups: ${selectedMuscleGroup.join(" - ")}`}</p>
       </Filters>
       <StyledUl>
-        {allExercisesDataCopy.map((exercise, index, self) => {
+        {allExercisesCopy.map((exercise, index, self) => {
           return (
             <StyledLiWrapper key={`filtered-list-${exercise.id}`}>
               {(index === 0 ||
-                exercise.muscle_group !==
+                exercise.bodyPart !==
                   self[self.findIndex((ex) => ex.id === exercise.id) - 1]
-                    .muscle_group) && <p>{exercise.muscle_group}</p>}
+                    .bodyPart) && <p>{exercise.bodyPart}</p>}
               <StyledLi>
-                {exercise.exercise_name}
+                {exercise.name}
                 <Button>Details</Button>
                 {selectedExercisesCopy.some((sel) => sel.id === exercise.id) ? (
                   <p>Selected</p>

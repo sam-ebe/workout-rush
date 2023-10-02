@@ -3,6 +3,7 @@ import { Button } from "./Button";
 import { styled } from "styled-components";
 import spinner from "./../assets/spinner.svg";
 import SessionTimer from "./SessionTimer";
+import { isHold } from "../utils/helpers";
 
 function Session({
   selectedExercises,
@@ -137,8 +138,8 @@ function SessionHistory({
   return (
     <ul>
       {selectedExercises.map((exercise, exerciseIndex) => (
-        <li key={`${exerciseIndex}-${exercise.exercise_name}`}>
-          <h3>Exercise: {exercise.exercise_name}</h3>
+        <li key={`${exerciseIndex}-${exercise.name}`}>
+          <h3>Exercise: {exercise.name}</h3>
           <ul>
             {exercise.sessionSets.map((set, setIndex) => {
               const current =
@@ -214,7 +215,8 @@ function SessionHistory({
                   ) : (
                     <>
                       {set.reps}
-                      {exercise.isHold ? " sec" : " reps"} x {set.weight} kg
+                      {isHold(exercise.name) ? " sec" : " reps"} x {set.weight}{" "}
+                      kg
                       {current && !endedSession && (
                         <SpinnerImg src={spinner} alt="In progress..." />
                       )}

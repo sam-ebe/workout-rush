@@ -11,3 +11,5 @@ export const DEFAULT_1_REP_DURATION = 6;
 
 // Default time in seconds for rest after an exercise
 export const DEFAULT_END_EXERCISE_REST_DURATION = 120;
+
+export const URL_EXERCISES_API = "https://exercisedb.p.rapidapi.com";

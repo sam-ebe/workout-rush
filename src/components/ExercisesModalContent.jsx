@@ -6,7 +6,7 @@ import { styled } from "styled-components";
 function ExercisesModalContent({
   handleClose,
   selectedExercises,
-  allExercisesData,
+  allExercises,
   isEdition,
   updateSelectedExercises,
   selectedMuscleGroup,
@@ -25,7 +25,7 @@ function ExercisesModalContent({
         selectedExercises={selectedExercises}
         isEdition={isEdition}
         updateSelectedExercises={updateSelectedExercises}
-        allExercisesData={allExercisesData}
+        allExercises={allExercises}
         isSearching={isSearching}
         handleIsSearching={handleIsSearching}
         selectedMuscleGroup={selectedMuscleGroup}

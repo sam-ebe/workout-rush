@@ -5,33 +5,62 @@ import Modal from "./Modal";
 import MuscleGroupList from "./MuscleGroupList";
 import ExercisesModalContent from "./ExercisesModalContent";
 import ExercisesList from "./ExercisesList";
-import { allExercisesData } from "../data/data";
+import {
+  /*allExercisesData,*/
+  allExercisesMock,
+  bodyPartsMock,
+} from "../data/data";
 import Session from "./Session";
 import {
   DEFAULT_EXERCISES_COUNT,
   DEFAULT_SET_COUNT,
   DEFAULT_1_REP_DURATION,
   DEFAULT_END_EXERCISE_REST_DURATION,
+  URL_EXERCISES_API,
 } from "../utils/constants";
+import { exercisesOptions, fetchData } from "../api/fetchData";
+import { isHold } from "../utils/helpers";
 
 function SessionSelect() {
-  const muscleGroupToIds = useMemo(() => {
-    return convertToMuscleGroupToIds(allExercisesData);
-  }, [allExercisesData]);
-
-  const allMuscleGroup = Object.keys(muscleGroupToIds);
-
   const [open, setOpen] = useState(false);
-  const [selectedMuscleGroup, setSelectedMuscleGroup] = useState([
-    getRandomInArray(allMuscleGroup),
-  ]);
+
   const [selectedExercises, setSelectedExercises] = useState([]);
   const [isSavedMuscleGroup, setIsSavedMuscleGroup] = useState(false);
   const [firstTimeSaved, setFirstTimeSaved] = useState(false);
   const [estimatedDuration, setEstimatedDuration] = useState(0);
   const [showSession, setShowSession] = useState(false);
 
+  const [allExercises, setAllExercises] = useState(allExercisesMock); // mocked to save API request
+  const [bodyParts, setBodyParts] = useState([]); // mocked to save API request
+
   let isEdition = open;
+
+  const fetchAllExercises = async () => {
+    console.log("fetchAllExercises");
+    if (!allExercises) {
+      const exercisesData = await fetchData(
+        URL_EXERCISES_API + "/exercises?limit=9999",
+        exercisesOptions,
+      );
+      setAllExercises(exercisesData);
+      console.log(exercisesData);
+    }
+  };
+
+  useEffect(() => {
+    const fetchBodyParts = async () => {
+      console.log("fetchAllBodyParts");
+      /*
+      const bodyPartsData = await fetchData(
+        URL_EXERCISES_API + "/exercises/bodyPartList?limit=9999",
+        exercisesOptions,
+      );
+      
+      setBodyParts(["all", ...bodyPartsData]);
+      */
+    };
+    fetchBodyParts();
+  }, []);
 
   useEffect(() => {
     if (isSavedMuscleGroup) {
@@ -43,13 +72,13 @@ function SessionSelect() {
         setSelectedExercises(
           getRandomExercisesByMuscleGroup(
             selectedMuscleGroup,
-            allExercisesData,
+            allExercisesMock,
             muscleGroupToIds,
           ).map((exercise) => ({
             ...exercise,
             // Default sets
             sessionSets: Array(DEFAULT_SET_COUNT).fill(
-              exercise.isHold
+              isHold(exercise.name)
                 ? { reps: 60, weight: 0, restTime: 60 }
                 : { reps: 8, weight: 0, restTime: 60 },
             ),
@@ -60,7 +89,7 @@ function SessionSelect() {
         // the selectedExercises may end up empty (no error)
         setSelectedExercises((prevExercises) =>
           prevExercises.filter((exercise) =>
-            selectedMuscleGroup.includes(exercise.muscle_group),
+            selectedMuscleGroup.includes(exercise.bodyPart),
           ),
         );
       }
@@ -78,6 +107,14 @@ function SessionSelect() {
     setEstimatedDuration(getEstimateDuration(selectedExercises));
   }, [selectedExercises]);
 
+  const muscleGroupToIds = useMemo(() => {
+    return convertToMuscleGroupToIds(allExercises);
+  }, [allExercises]);
+
+  const allMuscleGroup = Object.keys(muscleGroupToIds);
+  const [selectedMuscleGroup, setSelectedMuscleGroup] = useState([
+    getRandomInArray(allMuscleGroup),
+  ]);
   const handleOpen = () => {
     setOpen(true);
   };
@@ -96,7 +133,7 @@ function SessionSelect() {
   const handleSaveMuscleGroup = (val) => {
     if (!isSavedMuscleGroup) {
       // the "rest" of StyledSessionSelect is hidden only the first time isSavedMuscleGroup turns from false to true.
-      // After that it remains always displayed, just refreshing the loaded data (Exercises and eauipment)
+      // After that it remains always displayed, just refreshing the loaded data (Exercises and equipment)
       setFirstTimeSaved(true);
     }
     setIsSavedMuscleGroup(val);
@@ -146,7 +183,7 @@ function SessionSelect() {
   };
 
   let necessaryEquipment = selectedExercises
-    .flatMap((exercise) => exercise.necessary_equipment) // array with duplicates
+    .flatMap((exercise) => exercise.equipment) // array with duplicates
     .filter((value, index, self) => {
       return self.indexOf(value) === index; // if the current value's first occurence is on this index, the value gets added to the array
     }); // array with unique values
@@ -156,13 +193,18 @@ function SessionSelect() {
     <>
       {!showSession && (
         <StyledSessionSelect>
-          {/*after Save button will reload exercises from exercise list */}
+          <Button onClick={() => fetchAllExercises()}>
+            Fetch all exercises
+          </Button>
+
+          {/*Save button will load the exercises for selectedExercises list */}
           <MuscleGroupList
             allMuscleGroup={allMuscleGroup}
             selectedMuscleGroup={selectedMuscleGroup}
             handleChangeMuscleGroup={handleChangeMuscleGroup}
             isSavedMuscleGroup={isSavedMuscleGroup}
             handleSaveMuscleGroup={handleSaveMuscleGroup}
+            bodyParts={bodyParts}
           />
           {(firstTimeSaved || isSavedMuscleGroup) && (
             <>
@@ -174,13 +216,9 @@ function SessionSelect() {
 
               <h2>Necessary Equipment List</h2>
 
-              {necessaryEquipment.length > 0 ? (
-                necessaryEquipment.map((equipment) => {
-                  return <p key={equipment}>{equipment}</p>;
-                })
-              ) : (
-                <p>none</p>
-              )}
+              {necessaryEquipment.map((equipment, index) => (
+                <p key={index}>{equipment}</p>
+              ))}
 
               {/* 5 per five, min 5 min*/}
               <h2>Estimated Duration</h2>
@@ -195,7 +233,7 @@ function SessionSelect() {
                     selectedExercises={selectedExercises}
                     isEdition={isEdition}
                     updateSelectedExercises={updateSelectedExercises}
-                    allExercisesData={allExercisesData}
+                    allExercises={allExercises}
                     selectedMuscleGroup={selectedMuscleGroup}
                     exerciseNameOnly={true}
                   />
@@ -240,23 +278,24 @@ function getEstimateDuration(selectedExercises) {
     let totalSets = exercise.sessionSets.length;
 
     let totalExerciseTime =
-      (exercise.isHold ? totalReps : totalReps * DEFAULT_1_REP_DURATION) +
+      (isHold(exercise.name) ? totalReps : totalReps * DEFAULT_1_REP_DURATION) +
       totalRestTime;
 
     duration += totalExerciseTime + DEFAULT_END_EXERCISE_REST_DURATION;
   });
   return secondsToMinutes(duration);
 }
+// Associate muscleGroups to exercises
 // Output format: { top: [1, 2, 3], core: [4, 5, 6], legs: [7, 8, 9] }
-function convertToMuscleGroupToIds(allMuscleGroup) {
+function convertToMuscleGroupToIds(allExercises) {
   let muscleGroupToIds = {};
-  allMuscleGroup.forEach((item) => {
-    if (!muscleGroupToIds.hasOwnProperty(item.muscle_group)) {
+  allExercises.forEach((item) => {
+    if (!muscleGroupToIds.hasOwnProperty(item.bodyPart)) {
       // create a new key in the object
-      muscleGroupToIds[item.muscle_group] = [item.id];
+      muscleGroupToIds[item.bodyPart] = [item.id];
     } else {
       // push the exercises id value to the existing key
-      muscleGroupToIds[item.muscle_group].push(item.id);
+      muscleGroupToIds[item.bodyPart].push(item.id);
     }
   });
 
@@ -267,7 +306,7 @@ function convertToMuscleGroupToIds(allMuscleGroup) {
 // while maintaining a proportional distribution of exercises from each muscle group
 function getRandomExercisesByMuscleGroup(
   selectedMuscleGroup,
-  allExercisesData,
+  allExercises,
   muscleGroupToIds,
 ) {
   const randomExercisesArray = [];
@@ -286,8 +325,8 @@ function getRandomExercisesByMuscleGroup(
         const randomExerciseId = getRandomInArray(
           muscleGroupToIdsRemaining[group],
         );
-        // find the exercise with the given id in the allExercisesData array
-        const randomExercise = allExercisesData.find(
+        // find the exercise with the given id in the allExercises array
+        const randomExercise = allExercises.find(
           (exercise) => exercise.id === randomExerciseId,
         );
 

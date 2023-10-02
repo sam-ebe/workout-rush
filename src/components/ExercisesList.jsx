@@ -3,13 +3,13 @@ import { Button } from "./Button";
 import SearchList from "./SearchList";
 import { styled } from "styled-components";
 import { DEFAULT_SET_COUNT } from "../utils/constants";
-import { clampValue } from "../utils/helpers";
+import { clampValue, isHold } from "../utils/helpers";
 
 function ExercisesList({
   selectedExercises,
   isEdition = false,
   updateSelectedExercises,
-  allExercisesData,
+  allExercises,
   isSearching = false,
   handleIsSearching,
   selectedMuscleGroup,
@@ -48,13 +48,13 @@ function ExercisesList({
     console.log("update updateSelectedExercisesCopy");
     setSelectedExercisesCopy([
       ...selectedExercisesCopy,
-      ...allExercisesData
+      ...allExercises
         .filter((exercise) => exercise.id === id)
         .map((exercise) => ({
           ...exercise,
           // Default sets
           sessionSets: Array(DEFAULT_SET_COUNT).fill(
-            exercise.isHold
+            isHold(exercise.name)
               ? { reps: 60, weight: 0, restTime: 60 }
               : { reps: 8, weight: 0, restTime: 60 },
           ),
@@ -78,7 +78,7 @@ function ExercisesList({
 
     // add a new set to an exercise
     const addSetToExercise = (exercise) => {
-      const newSet = exercise.isHold
+      const newSet = isHold(exercise.name)
         ? { reps: 60, weight: 0, restTime: 60 }
         : { reps: 8, weight: 0, restTime: 60 };
 
@@ -189,7 +189,7 @@ function ExercisesList({
       {isSearching && (
         <>
           <SearchList
-            allExercisesData={allExercisesData}
+            allExercises={allExercises}
             selectedExercisesCopy={selectedExercisesCopy}
             updateSelectedExercisesCopy={updateSelectedExercisesCopy}
             selectedMuscleGroup={selectedMuscleGroup}
@@ -215,8 +215,8 @@ function MainRepsFields({
     { id: "sets", label: "sets", step: 1 },
     {
       id: "reps",
-      label: exercise.isHold ? "sec" : "reps",
-      step: exercise.isHold ? 10 : 1,
+      label: isHold(exercise.name) ? "sec" : "reps",
+      step: isHold(exercise.name) ? 10 : 1,
     },
     { id: "weight", label: "kg", step: 1 },
     { id: "restTime", label: "sec", step: 10 },
@@ -230,7 +230,7 @@ function MainRepsFields({
             <StyledRepsInput>
               <input
                 type="number"
-                id={`${exercise.exercise_name}-${field.id}`}
+                id={`${exercise.name}-${field.id}`}
                 value={
                   field.id === "sets"
                     ? exercise.sessionSets.length
@@ -241,7 +241,7 @@ function MainRepsFields({
                   handleInputChange(exercise.id, field.id, e.target.value)
                 }
               />
-              <label htmlFor={`${exercise.exercise_name}-${field.id}`}>
+              <label htmlFor={`${exercise.name}-${field.id}`}>
                 {field.label}
               </label>
             </StyledRepsInput>
@@ -273,9 +273,7 @@ function MainRepsFields({
                   </>
                 )}
               {index === inputFields.length - 1 && (
-                <p className="exercise-name">
-                  &nbsp;{`${exercise.exercise_name}`}
-                </p>
+                <p className="exercise-name">&nbsp;{`${exercise.name}`}</p>
               )}
             </>
           )}
@@ -295,7 +293,7 @@ function IndividualRepsFields({ exercise, handleIndividualInputChange }) {
             <input
               type="number"
               value={set.reps}
-              step={exercise.isHold ? 10 : 1}
+              step={isHold(exercise.name) ? 10 : 1}
               onChange={(e) =>
                 handleIndividualInputChange(
                   exercise.id,
@@ -305,7 +303,7 @@ function IndividualRepsFields({ exercise, handleIndividualInputChange }) {
                 )
               }
             />
-            <label>{exercise.isHold ? "sec" : "reps"}</label>
+            <label>{isHold(exercise.name) ? "sec" : "reps"}</label>
           </div>
           <div>
             <input
