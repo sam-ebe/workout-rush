@@ -1,16 +1,16 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Button } from "./Button";
+import { Button } from "../components/Button";
 import { styled } from "styled-components";
-import Modal from "./Modal";
-import MuscleGroupList from "./MuscleGroupList";
-import ExercisesModalContent from "./ExercisesModalContent";
-import ExercisesList from "./ExercisesList";
+import Modal from "../components/Modal";
+import MuscleGroupList from "../components/MuscleGroupList";
+import ExercisesModalContent from "../components/ExercisesModalContent";
+import ExercisesList from "../components/ExercisesList";
 import {
   /*allExercisesData,*/
   allExercisesMock,
   bodyPartsMock,
 } from "../data/data";
-import Session from "./Session";
+import Session from "../components/Session";
 import {
   DEFAULT_EXERCISES_COUNT,
   DEFAULT_SET_COUNT,
@@ -275,7 +275,7 @@ function getEstimateDuration(selectedExercises) {
       totalRestTime += set.restTime;
     }
 
-    let totalSets = exercise.sessionSets.length;
+    //let totalSets = exercise.sessionSets.length;
 
     let totalExerciseTime =
       (isHold(exercise.name) ? totalReps : totalReps * DEFAULT_1_REP_DURATION) +

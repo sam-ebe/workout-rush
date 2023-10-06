@@ -13,3 +13,10 @@ export const DEFAULT_1_REP_DURATION = 6;
 export const DEFAULT_END_EXERCISE_REST_DURATION = 120;
 
 export const URL_EXERCISES_API = "https://exercisedb.p.rapidapi.com";
+
+export const links = [
+  { name: "Home", to: "/" },
+  { name: "Quiz", to: "/quiz" },
+  { name: "SessionSelect", to: "/sessionSelect" },
+  { name: "Profile", to: "/profile" },
+];

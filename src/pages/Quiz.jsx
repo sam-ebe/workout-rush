@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { quizData } from "../data/data";
 import { styled } from "styled-components";
-import { Button } from "./Button";
+import { Button } from "../components/Button";
 
 function Quiz({ quizCompleted, handleQuizComplete }) {
   const [quiz, setQuiz] = useState(quizData);
