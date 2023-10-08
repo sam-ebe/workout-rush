@@ -20,7 +20,10 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="quiz" element={<Quiz />} />
+          <Route
+            path="quiz"
+            element={<Quiz handleQuizComplete={handleQuizComplete} />}
+          />
           <Route path="sessionSelect" element={<SessionSelect />} />
           <Route path="profile" element={<Profile />} />
           {/*a "catch-all" for not explicit URLs*/}

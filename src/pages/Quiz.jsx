@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { quizData } from "../data/data";
 import { styled } from "styled-components";
 import { Button } from "../components/Button";
+import { useNavigate } from "react-router-dom";
 
 function Quiz({ quizCompleted, handleQuizComplete }) {
+  const navigate = useNavigate();
   const [quiz, setQuiz] = useState(quizData);
   const [currentQuestion, setCurrentQuestion] = useState(0);
 
@@ -15,6 +17,7 @@ function Quiz({ quizCompleted, handleQuizComplete }) {
       setCurrentQuestion((c) => c + 1);
     } else {
       handleQuizComplete(!quizCompleted);
+      navigate("/");
     }
   };
   const handlePrevious = () => {
@@ -26,6 +29,7 @@ function Quiz({ quizCompleted, handleQuizComplete }) {
   const handleSkipAll = () => {
     handleQuizComplete(!quizCompleted);
     setCurrentQuestion(0);
+    navigate("/");
   };
 
   const handleSelect = (e, multipleChoice) => {

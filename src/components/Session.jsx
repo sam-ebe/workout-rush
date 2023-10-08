@@ -4,12 +4,14 @@ import { styled } from "styled-components";
 import spinner from "./../assets/spinner.svg";
 import SessionTimer from "./SessionTimer";
 import { isHold } from "../utils/helpers";
+import { useNavigate } from "react-router-dom";
 
 function Session({
   selectedExercises,
   updateSelectedExercisesEditingSet,
   deleteSelectedExercisesEditingSet,
 }) {
+  const navigate = useNavigate();
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
   const [currentSetIndex, setCurrentSetIndex] = useState(0);
   const [endedSession, setEndedSession] = useState(false);
@@ -50,13 +52,7 @@ function Session({
         endedSession={endedSession}
       />
       {endedSession && (
-        <Button
-          onClick={() =>
-            alert("Yep, let's go somewhere. An imaginary Home page?")
-          }
-        >
-          Back to Home
-        </Button>
+        <Button onClick={() => navigate("/")}>Back to Home</Button>
       )}
     </>
   );

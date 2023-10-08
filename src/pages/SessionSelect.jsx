@@ -5,11 +5,7 @@ import Modal from "../components/Modal";
 import MuscleGroupList from "../components/MuscleGroupList";
 import ExercisesModalContent from "../components/ExercisesModalContent";
 import ExercisesList from "../components/ExercisesList";
-import {
-  /*allExercisesData,*/
-  allExercisesMock,
-  bodyPartsMock,
-} from "../data/data";
+import { allExercisesMock, bodyPartsMock } from "../data/data";
 import Session from "../components/Session";
 import {
   DEFAULT_EXERCISES_COUNT,
@@ -193,9 +189,9 @@ function SessionSelect() {
     <>
       {!showSession && (
         <StyledSessionSelect>
-          <Button onClick={() => fetchAllExercises()}>
+          {/*<Button onClick={() => fetchAllExercises()}>
             Fetch all exercises
-          </Button>
+            </Button>*/}
 
           {/*Save button will load the exercises for selectedExercises list */}
           <MuscleGroupList
